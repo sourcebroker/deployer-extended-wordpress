@@ -29,7 +29,7 @@ Installation
 ------------
 
 1) Install package with composer:
-::
+   ::
 
       composer require sourcebroker/deployer-extended-wordpress ~0.0.1
 
