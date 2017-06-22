@@ -11,17 +11,12 @@ task('deploy:wpcore', function() {
 
     // Check if {{deploy_path}}/release link exists. if not - it means that task was executed after "deploy:symlink" task, so we can't proceed,
     // because we don't know the path to the previous release
-    $releasePathExists = !!run("if [ -h $(echo {{deploy_path}}/release) ]; then echo 1; else echo 0; fi")->toString();
-
-    if (!$releasePathExists) {
+    if (!test("[ -h '{{deploy_path}}/release' ]")) {
         throw new \RuntimeException('Task "deploy:wp:core" can not be called after "deploy:symlink" [Error code: 1827354672]');
     }
 
     // check if {{deploy_path}}/current link exists
-    $currentPathExists = !!run("if [ -h $(echo {{deploy_path}}/current) ]; then echo 1; else echo 0; fi")->toString();
-
-    // Get current version of wordpress
-    if (!$currentPathExists) {
+    if (!test("[ -h '{{deploy_path}}/current' ]")) {
         // Previous release does not exist - get version from user
         writeln('<info>Symlink "current" does not exists, so it looks that this is the initial deploy. That means it is not possible to find out wordpress version from previous release and you need to enter version to install manually.</info>');
         $currentWordpressVersion = ask('<info>Please enter a git tag for appropriate WordPress version, e.g. "4.5.3":</info>');
@@ -36,10 +31,10 @@ task('deploy:wpcore', function() {
     }
 
     // Ensure wordpress git directory exists
-    run("if [ ! -d $(echo $wpRepoDir) ]; then mkdir -p $wpRepoDir; fi");
+    run("if [ ! -d $wpRepoDir ]; then mkdir -p $wpRepoDir; fi");
 
     // download latest version of git into shared/wordpress.git
-    run("if [ -e $(echo $wpRepoDir/.git) ]; then cd $wpRepoDir && git checkout master && git fetch --all && git fetch --tags; else cd $wpRepoDir && git clone $wpRepoUrl .;fi");
+    run("if [ -e $wpRepoDir/.git ]; then cd $wpRepoDir && git checkout master && git fetch --all && git fetch --tags; else cd $wpRepoDir && git clone $wpRepoUrl .;fi");
 
     // checkout to the appropriate version of wp
     run("cd $wpRepoDir && git checkout tags/$currentWordpressVersion");
