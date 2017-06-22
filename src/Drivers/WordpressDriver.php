@@ -21,7 +21,7 @@ class WordpressDriver
         $dbConfig = [];
         if (file_exists($absolutePathWithConfig)) {
             /** @noinspection PhpIncludeInspection */
-            require $absolutePathWithConfig;
+            require_once $absolutePathWithConfig;
 
             if (defined('DB_NAME')) {
                 $dbConfig['dbname'] = DB_NAME;
@@ -61,7 +61,7 @@ class WordpressDriver
     {
         if (file_exists($absolutePathWithConfig)) {
             /** @noinspection PhpIncludeInspection */
-            require $absolutePathWithConfig;
+            require_once $absolutePathWithConfig;
 
             $instanceName = getenv('INSTANCE');
             if (isset($instanceName) && strlen($instanceName)) {
