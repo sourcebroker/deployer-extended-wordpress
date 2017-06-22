@@ -47,5 +47,3 @@ task('deploy:wpcore', function() {
     // copy content of new release with wp core (without .git directory and without overwriting existing files)
     run("rsync -av --exclude '.git' --ignore-existing {{deploy_path}}/shared/wordpress.git/ {{deploy_path}}/release/");
 })->desc('Installing WordPress core');
-
-after('deploy:vendors', 'deploy:wpcore');
