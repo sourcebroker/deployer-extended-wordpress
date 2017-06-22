@@ -1,0 +1,29 @@
+{
+  "name": "sourcebroker/deployer-extended-wordpress",
+  "description": "Deployment for WordPress with deployer.org.",
+  "license": "MIT",
+  "keywords": [
+    "WordPress",
+    "deployer"
+  ],
+  "authors": [
+    {
+      "name": "Krystian Szymukowicz",
+      "email": "k.szymukowicz@gmail.com"
+    },
+    {
+      "name": "Karol Lamparski",
+      "email": "klamparski@gmail.com"
+    }
+  ],
+  "require": {
+    "sourcebroker/deployer-extended": "^5.0.0",
+    "sourcebroker/deployer-extended-media": "^2.0.0",
+    "sourcebroker/deployer-extended-database": "^2.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "SourceBroker\\DeployerExtendedWordpress\\": "src/"
+    }
+  }
+}
