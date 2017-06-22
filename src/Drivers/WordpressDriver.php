@@ -2,7 +2,6 @@
 
 namespace SourceBroker\DeployerExtendedWordpress\Drivers;
 
-use Dotenv\Dotenv;
 use SourceBroker\DeployerExtended\Utility\FileUtility;
 
 /**
@@ -49,6 +48,30 @@ class WordpressDriver
             throw new \Exception('Missing file "' . $absolutePathWithConfig . '" when trying to get Wordpress configuration file.');
         }
         return $dbConfig;
+    }
 
+    /**
+     * Return the instance name for project
+     *
+     * @param null $params
+     * @return string
+     * @throws \Exception
+     */
+    public function getInstanceName($absolutePathWithConfig = null)
+    {
+        if (file_exists($absolutePathWithConfig)) {
+            /** @noinspection PhpIncludeInspection */
+            require $absolutePathWithConfig;
+
+            $instanceName = getenv('INSTANCE');
+            if (isset($instanceName) && strlen($instanceName)) {
+                $instanceName = strtolower($instanceName);
+            } else {
+                throw new \Exception("\nINSTANCE env variable is not set. \nIf this is your local instance then please put following line: \nputenv('INSTANCE=local');  \nin configuration file: ' . $filename . '\n\n");
+            }
+            return $instanceName;
+        } else {
+            throw new \Exception('Missing file "' . $absolutePathWithConfig . '" when trying to get Wordpress configuration file.');
+        }
     }
 }

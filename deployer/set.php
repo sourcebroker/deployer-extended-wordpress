@@ -84,3 +84,6 @@ set('db_databases',
         ]
     ]
 );
+set('db_instance',
+    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php')
+);
