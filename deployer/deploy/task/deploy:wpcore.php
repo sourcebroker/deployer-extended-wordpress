@@ -48,4 +48,4 @@ task('deploy:wpcore', function() {
     run("rsync -av --exclude '.git' --ignore-existing {{deploy_path}}/shared/wordpress.git/ {{deploy_path}}/release/");
 })->desc('Installing WordPress core');
 
-after('deploy:vendors', 'deploy:wp:core');
+after('deploy:vendors', 'deploy:wpcore');
