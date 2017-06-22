@@ -2,6 +2,10 @@
 
 namespace Deployer;
 
+set('local/bin/wp', function(){
+    return runLocally('which wp')->toString();
+});
+
 set('shared_dirs', [
         'wp-content/uploads',
         'wp-content/languages',
@@ -74,7 +78,8 @@ set('db_default', [
     ],
     'ignore_tables_in' => [],
     'post_sql_out' => '',
-    'post_sql_in' => ''
+    'post_sql_in' => '',
+    'post_command' => '{local/bin/deployer} db:process:wp:domains'
 ]);
 set('db_databases',
     [
