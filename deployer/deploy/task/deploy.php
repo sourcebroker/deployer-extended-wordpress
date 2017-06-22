@@ -9,7 +9,7 @@ task('deploy', [
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',
-    'deploy:wpcore',
+    'deploy:wp:core',
     'deploy:clear_paths',
     'php:clear_cache_cli',
     'deploy:symlink',

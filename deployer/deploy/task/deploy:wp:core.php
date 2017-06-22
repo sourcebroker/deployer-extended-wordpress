@@ -5,7 +5,7 @@ namespace Deployer;
 /**
  * Deploys WordPress core to the new release. WordPress core version is took from the previous release.
  */
-task('deploy:wpcore', function() {
+task('deploy:wp:core', function() {
     $wpRepoDir = get('wp_core_dir', '{{deploy_path}}/shared/wordpress.git');
     $wpRepoUrl = get('wp_core_repository', 'https://github.com/WordPress/WordPress.git');
 
