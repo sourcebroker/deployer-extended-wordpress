@@ -11,7 +11,6 @@ set('shared_dirs', [
 
 set('shared_files', [
     'wp-config-local.php',
-    '.env'
 ]);
 
 set('previous_release_dirs_to_copy', [
