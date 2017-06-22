@@ -14,7 +14,7 @@ task('deploy:wpcore', function() {
     $releasePathExists = !!run("if [ -h $(echo {{deploy_path}}/release) ]; then echo 1; else echo 0; fi")->toString();
 
     if (!$releasePathExists) {
-        throw new RuntimeException('Task "deploy:wp:core" can not be called after "deploy:symlink" [Error code: 1827354672]');
+        throw new \RuntimeException('Task "deploy:wp:core" can not be called after "deploy:symlink" [Error code: 1827354672]');
     }
 
     // check if {{deploy_path}}/current link exists

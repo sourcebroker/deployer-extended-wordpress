@@ -2,8 +2,6 @@
 
 namespace SourceBroker\DeployerExtendedWordpress\Drivers;
 
-use SourceBroker\DeployerExtended\Utility\FileUtility;
-
 /**
  * Class WordpressDriver
  * @package SourceBroker\DeployerExtended\Drivers
@@ -53,9 +51,10 @@ class WordpressDriver
     /**
      * Return the instance name for project
      *
-     * @param null $params
+     * @param null $absolutePathWithConfig
      * @return string
      * @throws \Exception
+     * @internal param null $params
      */
     public function getInstanceName($absolutePathWithConfig = null)
     {
@@ -67,7 +66,7 @@ class WordpressDriver
             if (isset($instanceName) && strlen($instanceName)) {
                 $instanceName = strtolower($instanceName);
             } else {
-                throw new \Exception("\nINSTANCE env variable is not set. \nIf this is your local instance then please put following line: \nputenv('INSTANCE=local');  \nin configuration file: ' . $filename . '\n\n");
+                throw new \Exception("\nINSTANCE env variable is not set. \nIf this is your local instance then please put following line: \nputenv('INSTANCE=local');  \nin configuration file: ' . $absolutePathWithConfig . '\n\n");
             }
             return $instanceName;
         } else {

@@ -2,6 +2,8 @@
 
 namespace SourceBroker\DeployerExtendedWordpress;
 
+use SourceBroker\DeployerExtended\Utility\FileUtility;
+
 class Loader
 {
     public function __construct()
@@ -12,8 +14,8 @@ class Loader
         new \SourceBroker\DeployerExtendedMedia\Loader();
         new \SourceBroker\DeployerExtended\Loader();
 
-        \SourceBroker\DeployerExtended\Utility\FileUtility::requireFilesFromDirectoryReqursively(
-            dirname((new \ReflectionClass('\SourceBroker\DeployerExtendedWordpress\Loader'))->getFileName()) . '/../deployer/'
+        FileUtility::requireFilesFromDirectoryReqursively(
+            dirname((new \ReflectionClass(\SourceBroker\DeployerExtendedWordpress\Loader::class))->getFileName()) . '/../deployer/'
         );
     }
 }
