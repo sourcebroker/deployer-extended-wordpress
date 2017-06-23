@@ -71,6 +71,12 @@ set('media',
     ]);
 
 // Look https://github.com/sourcebroker/deployer-extended-database for docs
+set('db_instance',
+    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php')
+);
+set('default_stage',
+    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php')
+);
 set('db_default', [
     'ignore_tables_out' => [
         'cf_.*',
@@ -89,6 +95,4 @@ set('db_databases',
         ]
     ]
 );
-set('db_instance',
-    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php')
-);
+
