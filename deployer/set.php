@@ -2,7 +2,7 @@
 
 namespace Deployer;
 
-set('local/bin/wp', function(){
+set('local/bin/wp', function () {
     return runLocally('which wp')->toString();
 });
 
@@ -71,12 +71,14 @@ set('media',
     ]);
 
 // Look https://github.com/sourcebroker/deployer-extended-database for docs
-set('db_instance',
-    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php')
-);
-set('default_stage',
-    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php')
-);
+set('db_instance', function () {
+    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php');
+});
+
+set('default_stage', function () {
+    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php');
+});
+
 set('db_default', [
     'ignore_tables_out' => [
         'cf_.*',
@@ -87,11 +89,14 @@ set('db_default', [
     'post_sql_in' => '',
     'post_command' => '{local/bin/deployer} db:process:wp:domains'
 ]);
+
 set('db_databases',
     [
         'database_default' => [
             get('db_default'),
-            (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getDatabaseConfig(getcwd() . '/wp-config-local.php'),
+            function () {
+                (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getDatabaseConfig(getcwd() . '/wp-config-local.php');
+            }
         ]
     ]
 );
