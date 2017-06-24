@@ -89,7 +89,7 @@ set('db_default', [
     'ignore_tables_in' => [],
     'post_sql_out' => '',
     'post_sql_in' => '',
-    'post_command' => '{local/bin/deployer} db:process:wp:domains'
+    'post_command' => ['{{local/bin/deployer}} db:import:post_command:wp_domains']
 ]);
 
 set('db_databases',
