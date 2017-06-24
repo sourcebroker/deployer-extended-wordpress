@@ -33,7 +33,7 @@ task('deploy', [
     // Detect WP version and get fresh code from WordPress git repo
     'deploy:wp:core',
 
-    // Standard deployer deploy:copy_dirs. Copy plugins from previous release of Wordpress
+    // Standard deployer deploy:copy_dirs. Copy plugins from previous release of WordPress
     'deploy:copy_dirs',
 
     // Standard deployer deploy:clear_paths
@@ -43,7 +43,7 @@ task('deploy', [
     // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-cli
     'php:clear_cache_cli',
 
-    // Start buffering http requests. No frontend access possbile from now.
+    // Start buffering http requests. No frontend access possible from now.
     // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
     'buffer:start',
 
@@ -54,7 +54,7 @@ task('deploy', [
     // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-http
     'php:clear_cache_http',
 
-    // Frontend access possbile again from now
+    // Frontend access possible again from now
     // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
     'buffer:stop',
 
@@ -63,4 +63,4 @@ task('deploy', [
 
     // Standard deployer cleanup.
     'cleanup',
-])->desc('Deploy your Wordpress');
+])->desc('Deploy your WordPress');
