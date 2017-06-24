@@ -72,11 +72,13 @@ set('media',
 
 // Look https://github.com/sourcebroker/deployer-extended-database for docs
 set('db_instance', function () {
-    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php');
+    return (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)
+        ->getInstanceName(getcwd() . '/wp-config-local.php');
 });
 
 set('default_stage', function () {
-    (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getInstanceName(getcwd() . '/wp-config-local.php');
+    return (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)
+        ->getInstanceName(getcwd() . '/wp-config-local.php');
 });
 
 set('db_default', [
@@ -95,7 +97,8 @@ set('db_databases',
         'database_default' => [
             get('db_default'),
             function () {
-                (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)->getDatabaseConfig(getcwd() . '/wp-config-local.php');
+                return (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)
+                    ->getDatabaseConfig(getcwd() . '/wp-config-local.php');
             }
         ]
     ]
