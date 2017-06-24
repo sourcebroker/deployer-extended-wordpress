@@ -3,7 +3,16 @@
 namespace Deployer;
 
 set('local/bin/wp', function () {
-    return runLocally('which wp')->toString();
+    $wpCliBin = null;
+    if (testLocally('[ -e \'{{deploy_path}}/vendor/bin/wp\' ]')) {
+        $wpCliBin = parse('{{deploy_path}}/vendor/bin/wp');
+    } else {
+        $wpCliBin = runLocally('which wp')->toString();
+    }
+    if(!$wpCliBin) {
+        throw new \Exception('Can not determine wp_cli path. Make it available inside you PATH or use composer version.');
+    }
+    return $wpCliBin;
 });
 
 set('shared_dirs', [
@@ -17,7 +26,7 @@ set('shared_files', [
     'wp-config-local.php',
 ]);
 
-set('previous_release_dirs_to_copy', [
+set('copy_dirs', [
     'wp-content/plugins/'
 ]);
 
@@ -36,8 +45,15 @@ set('clear_paths', [
     'composer.phar',
     '.gitignore',
     '.gitattributes',
-    '.env.dist'
 ]);
+
+// Look on https://github.com/sourcebroker/deployer-extended#buffer-start for docs
+set('buffer_config', [
+        'index.php' => [
+            'entrypoint_filename' => 'index.php',
+        ],
+    ]
+);
 
 // Look https://github.com/sourcebroker/deployer-extended-media for docs
 set('media',
@@ -82,12 +98,7 @@ set('default_stage', function () {
 });
 
 set('db_default', [
-    'ignore_tables_out' => [
-        'cf_.*',
-        'cache_.*',
-    ],
-    'ignore_tables_in' => [],
-    'post_sql_out' => '',
+    'ignore_tables_out' => [],
     'post_sql_in' => '',
     'post_command' => ['{{local/bin/deployer}} db:import:post_command:wp_domains']
 ]);
@@ -103,4 +114,3 @@ set('db_databases',
         ]
     ]
 );
-
