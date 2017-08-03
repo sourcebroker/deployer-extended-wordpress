@@ -18,6 +18,7 @@
   ],
   "require": {
     "wp-cli/wp-cli": "^1.2",
+    "deployer/dist": "~4.3.1",
     "sourcebroker/deployer-extended": "^6.0",
     "sourcebroker/deployer-extended-media": "^2.0",
     "sourcebroker/deployer-extended-database": "^4.0"
