@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+0.3.0
+~~~~~
+
+a) Add dependency to deployer/dist
+
 0.2.0
 ~~~~~
 
