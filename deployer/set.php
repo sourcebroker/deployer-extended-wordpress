@@ -40,11 +40,14 @@ set('writable_dirs', [
 
 set('clear_paths', [
     '.git',
+    '.gitattributes',
+    '.gitignore',
     'composer.json',
     'composer.lock',
     'composer.phar',
-    '.gitignore',
-    '.gitattributes',
+    'license.txt',
+    'readme.html',
+    'wp-config-local.php.dist'
 ]);
 
 // Look on https://github.com/sourcebroker/deployer-extended#buffer-start for docs

@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+0.3.1
+~~~~~
+
+a) [TASK] Add more clear_paths files
+
 0.3.0
 ~~~~~
 
