@@ -10,6 +10,8 @@ b) [TASK] Update deployer-extended-* packages.
 c) [FEATURE] Add sourcebroker/deployer-loader
 d) [TASK] Add .gitignore with /vendors so vendors can be installed while developing ext.
 e) [TASK] Move "db:import:post_command:wp_domains.php" to proper folder.
+f) [TASK] Use Loader to load recipes from deployer-extended-*
+
 
 0.3.1
 ~~~~~

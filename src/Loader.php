@@ -2,20 +2,20 @@
 
 namespace SourceBroker\DeployerExtendedWordpress;
 
-use SourceBroker\DeployerExtended\Utility\FileUtility;
+use SourceBroker\DeployerLoader\Load;
 
 class Loader
 {
     public function __construct()
     {
+        /** @noinspection PhpIncludeInspection */
         require_once 'recipe/common.php';
-
-        new \SourceBroker\DeployerExtendedDatabase\Loader();
-        new \SourceBroker\DeployerExtendedMedia\Loader();
-        new \SourceBroker\DeployerExtended\Loader();
-
-        FileUtility::requireFilesFromDirectoryReqursively(
-            dirname((new \ReflectionClass(\SourceBroker\DeployerExtendedWordpress\Loader::class))->getFileName()) . '/../deployer/'
+        new Load([
+                ['path' => 'vendor/sourcebroker/deployer-extended/deployer'],
+                ['path' => 'vendor/sourcebroker/deployer-extended-database/deployer'],
+                ['path' => 'vendor/sourcebroker/deployer-extended-media/deployer'],
+                ['path' => 'vendor/sourcebroker/deployer-extended-wordpress/deployer']
+            ]
         );
     }
 }
