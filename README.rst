@@ -28,9 +28,8 @@ This package depends on following packages:
 - | `sourcebroker/deployer-extended-media`_
   | Package which provides some php framework independent deployer tasks to synchronize media.
 
-- | `wp-cli/wp-cli`_
-  | Package which provides lot of useful cli based commands to manage WordPress. For now we use only the
-    "search-replace" command to change domains after database synchronization.
+- | `wp-cli/search-replace-command`_
+  | Package to change domains after database synchronization. Part of wp-cli/wp-cli utility.
 
 
 Installation
@@ -91,8 +90,8 @@ Project's folders structure
 
 This deployment has following assumptions:
 
-1) WordPress source code is not in GIT in order to have ability to easily upgrade them from admin panel
-2) Plugins source code is not in GIT in order to have ability to easily upgrade them from admin panel
+1) WordPress source code is not in GIT in order to have ability to easily upgrade them from admin panel.
+2) Plugins source code is not in GIT in order to have ability to easily upgrade them from admin panel.
 3) Taking the two above points into consideration the only files in GIT will be:
    ::
 
@@ -170,7 +169,7 @@ The deploy task consist of following tasks:
         // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-cli
         'php:clear_cache_cli',
 
-        // Start buffering http requests. No frontend access possbile from now.
+        // Start buffering http requests. No frontend access possible from now.
         // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
         'buffer:start',
 
@@ -218,6 +217,11 @@ Synchronizing database
 ----------------------
 
 Database synchronization is done with `sourcebroker/deployer-extended-database`.
+Example of command for synchronizing database from live to local instance:
+::
+
+   dep db:pull live
+
 
 Domain replacement
 ++++++++++++++++++
@@ -249,7 +253,7 @@ Look at following example to give you idea:
 The if you will do:
 ::
 
-    dep db:pull live local
+    dep db:pull live
 
 the following commands will be done automatically after database import:
 ::
@@ -286,16 +290,16 @@ Look at `wp-config-local.php`_ to see what data should be stored in this file in
 can start to work. Mind that "deploy.php" file must be the same on all instance before you can start to do database
 synchronization.
 
-The command for synchronizing database from live media to local instance is:
-::
-
-   dep db:pull live
-
 
 Synchronizing media & WordPress / plugins code
 ----------------------------------------------
 
 Media synchronization is done with package `sourcebroker/deployer-extended-media`_.
+The command for synchronizing media & php files which are out of git is:
+ ::
+
+   dep media:pull live
+
 Because we do not use composer to get WordPress and plugins therefore we will treat here code of WordPress and
 plugins as kind of media to synchronize. This is a bit o misuse of `sourcebroker/deployer-extended-media`_ but
 if we think of media as part of project which is out of git that needs to be synchronized between instances then
@@ -335,13 +339,8 @@ Therefore our config to synchronize files media & WordPress / plugins code looks
             ]
         ]);
 
-The command for synchronizing media & php files which are out of git is:
-::
-
-   dep media:pull live
-
 
 .. _sourcebroker/deployer-extended: https://github.com/sourcebroker/deployer-extended
 .. _sourcebroker/deployer-extended-media: https://github.com/sourcebroker/deployer-extended-media
 .. _sourcebroker/deployer-extended-database: https://github.com/sourcebroker/deployer-extended-database
-.. _wp-cli/wp-cli: https://github.com/wp-cli/wp-cli
+.. _wp-cli/search-replace-command: https://github.com/wp-cli/search-replace-command
