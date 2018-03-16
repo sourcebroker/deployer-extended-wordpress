@@ -2,6 +2,13 @@
 Changelog
 ---------
 
+0.4.0
+~~~~~
+
+a) [TASK][!!!] Instead whole wp-cli/wp-cli load only wp-cli/search-replace-command.
+b) [TASK] Update deployer-extended-* packages.
+c) [FEATURE] Add sourcebroker/deployer-loader
+
 0.3.1
 ~~~~~
 
