@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.4.1
+~~~~~
+
+a) [BUGFIX] Revert using full wp-cli/wp-cli.
+
+
 0.4.0
 ~~~~~
 
