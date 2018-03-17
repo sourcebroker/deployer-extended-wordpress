@@ -2,11 +2,10 @@
 Changelog
 ---------
 
-0.4.1
+0.5.0
 ~~~~~
 
-a) [BUGFIX] Revert using full wp-cli/wp-cli.
-
+a) [BUGFIX][!!!] Revert full wp-cli/wp-cli.
 
 0.4.0
 ~~~~~
