@@ -13,7 +13,7 @@ e) [TASK] Move "db:import:post_command:wp_domains.php" to proper folder.
 f) [TASK] Use Loader to load recipes from deployer-extended-*
 g) [TASK] Update docs.
 h) [TASK] In deploy add task do backup of database with rotation "last 10".
-
+i) [TASK] Docs.
 
 0.3.1
 ~~~~~

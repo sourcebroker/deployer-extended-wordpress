@@ -2,6 +2,9 @@
 
 namespace Deployer;
 
+/**
+ * Replace domains in current instance.
+ */
 task('db:import:post_command:wp_domains', function () {
     if (input()->getOption('dumpcode')) {
         $dumpCode = input()->getOption('dumpcode');

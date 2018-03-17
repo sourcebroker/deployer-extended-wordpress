@@ -122,6 +122,11 @@ The wp-config-local.php should be excluded from git and have following data.
 
 The INSTANCE should be the same as server name defined in deploy.php.
 
+This file should be included in ``wp-config.php`` before ``require_once(ABSPATH . 'wp-settings.php');``
+::
+
+  require_once(ABSPATH . 'wp-config-local.php');
+
 Deployment
 ----------
 
@@ -156,14 +161,18 @@ The deploy task consist of following tasks:
         // Standard deployer deploy:vendors
         'deploy:vendors',
 
-        // Detect WP version based on current release and get fresh code from WordPress git repo
+        // Detect WP version and get fresh code from WordPress git repo
         'deploy:wp:core',
 
-        // Standard deployer deploy:copy_dirs. Copy plugins from previous release of Wordpress
+        // Standard deployer deploy:copy_dirs. Copy plugins from previous release of WordPress
         'deploy:copy_dirs',
 
         // Standard deployer deploy:clear_paths
         'deploy:clear_paths',
+
+        // Create database backup, compress and copy to database store.
+        // Read more on https://github.com/sourcebroker/deployer-extended-database#db-backup
+        'db:backup',
 
         // Clear php cli cache.
         // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-cli
@@ -180,7 +189,7 @@ The deploy task consist of following tasks:
         // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-http
         'php:clear_cache_http',
 
-        // Frontend access possbile again from now
+        // Frontend access possible again from now
         // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
         'buffer:stop',
 
@@ -189,7 +198,7 @@ The deploy task consist of following tasks:
 
         // Standard deployer cleanup.
         'cleanup',
-    ])->desc('Deploy your Wordpress');
+    ])->desc('Deploy your WordPress');
 
 Its very advisable that you test deploy on some beta instance first :)
 ::
@@ -229,7 +238,7 @@ Domain replacement
 The "post_command" task "db:import:post_command:wp_domains" will change domains declared in "public_urls". Domain
 replacement is done with cli command "search-replace" from `wp-cli/wp-cli`_.
 
-Please mind to have the same amount of "public_urls" for each of instance because replacement on domains is done for
+Please mind to have the same amount of "public_urls" for each of instances because replacement on domains is done for
 every pair of corresponding urls.
 
 Look at following example to give you idea:
@@ -286,9 +295,7 @@ Database synchro configuration:
         ]
     );
 
-Look at `wp-config-local.php`_ to see what data should be stored in this file in order the database synchronization
-can start to work. Mind that "deploy.php" file must be the same on all instance before you can start to do database
-synchronization.
+Mind that "deploy.php" file must be the same on all instance before you can start to do database synchronization.
 
 
 Synchronizing media & WordPress / plugins code

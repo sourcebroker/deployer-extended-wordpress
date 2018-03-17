@@ -3,7 +3,8 @@
 namespace Deployer;
 
 /**
- * Deploys WordPress core to the new release. WordPress core version is took from the previous release.
+ * Deploys WordPress core to the new release.
+ * WordPress core version number is taken from the previous release.
  */
 task('deploy:wp:core', function() {
     $wpRepoDir = get('wp_core_dir', '{{deploy_path}}/shared/wordpress.git');
@@ -15,13 +16,13 @@ task('deploy:wp:core', function() {
         throw new \RuntimeException('Task "deploy:wp:core" can not be called after "deploy:symlink" [Error code: 1827354672]');
     }
 
-    // check if {{deploy_path}}/current link exists
+    // Check if {{deploy_path}}/current link exists.
     if (!test("[ -h '{{deploy_path}}/current' ]")) {
-        // Previous release does not exist - get version from user
+        // Previous release does not exist - get version from user.
         writeln('<info>Symlink "current" does not exists, so it looks that this is the initial deploy. That means it is not possible to find out wordpress version from previous release and you need to enter version to install manually.</info>');
         $currentWordpressVersion = ask('<info>Please enter a git tag for appropriate WordPress version, e.g. "4.5.3":</info>');
     } else {
-        // Previous release exists - get version from previous version.php file
+        // Previous release exists - get version from previous version.php file.
         $currentWordpressVersion  = run('cat {{deploy_path}}/current/wp-includes/version.php | grep -Ei "wp_version\s+=\s+[\'\"]([0-9\.]+)[\'\"]" | grep -Eo "[0-9\.]" | paste -sd ""')->toString();
     }
 
@@ -30,15 +31,15 @@ task('deploy:wp:core', function() {
         return;
     }
 
-    // Ensure wordpress git directory exists
+    // Ensure wordpress git directory exists.
     run("if [ ! -d $wpRepoDir ]; then mkdir -p $wpRepoDir; fi");
 
-    // download latest version of git into shared/wordpress.git
+    // Download latest version of WP git into shared/wordpress.git
     run("if [ -e $wpRepoDir/.git ]; then cd $wpRepoDir && git checkout master && git fetch --all && git fetch --tags; else cd $wpRepoDir && git clone $wpRepoUrl .;fi");
 
-    // checkout to the appropriate version of wp
+    // Checkout to the appropriate version of WP.
     run("cd $wpRepoDir && git checkout tags/$currentWordpressVersion");
 
-    // copy content of new release with wp core (without .git directory and without overwriting existing files)
+    // Copy WP core to new release folder (without .git directory and without overwriting existing files)
     run("rsync -av --exclude '.git' --ignore-existing {{deploy_path}}/shared/wordpress.git/ {{deploy_path}}/release/");
 })->desc('Installing WordPress core');
