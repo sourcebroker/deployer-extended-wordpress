@@ -39,6 +39,10 @@ task('deploy', [
     // Standard deployer deploy:clear_paths
     'deploy:clear_paths',
 
+    // Create database backup, compress and copy to database store.
+    // Read more on https://github.com/sourcebroker/deployer-extended-database#db-backup
+    'db:backup',
+
     // Clear php cli cache.
     // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-cli
     'php:clear_cache_cli',
