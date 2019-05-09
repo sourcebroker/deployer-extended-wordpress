@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.6.0
+~~~~~
+
+a) [TASK][!!!BREAKING] Upgrade to wp-cli 2
+b) [TASK][!!!BREAKING] Change the way the wp-cli binary is detected. It must be now present in vendor/bin.
+
 0.5.0
 ~~~~~
 

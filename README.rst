@@ -69,16 +69,16 @@ Installation
 
     server('live', '111.111.111.111')
         ->user('www-data')
-        ->set('public_urls', ['http://www.example.com/'])
+        ->set('public_urls', ['https://www.example.com/'])
         ->set('deploy_path', '/var/www/example.com.live');
 
     server('beta', '111.111.111.111')
         ->user('www-data')
-        ->set('public_urls', ['http://beta.example.com/'])
+        ->set('public_urls', ['https://beta.example.com/'])
         ->set('deploy_path', '/var/www/example.com.beta');
 
     server('local', 'localhost')
-        ->set('public_urls', ['http://example-com.dev/'])
+        ->set('public_urls', ['https://example-com.dev/'])
         ->set('deploy_path', getcwd());
 
 
@@ -246,16 +246,16 @@ Look at following example to give you idea:
 
     server('live', '111.111.111.111')
         ->user('www-data')
-        ->set('public_urls', ['http://www.example.com', 'http://sub.example.com'])
+        ->set('public_urls', ['https://www.example.com', 'https://sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.live');
 
     server('beta', '111.111.111.111')
         ->user('www-data')
-        ->set('public_urls', ['http://beta.example.com', 'http://beta-sub.example.com'])
+        ->set('public_urls', ['https://beta.example.com', 'https://beta-sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.beta');
 
     server('local', 'localhost')
-        ->set('public_urls', ['http://example-com.dev', 'http://sub-example-com.dev'])
+        ->set('public_urls', ['https://example-com.dev', 'https://sub-example-com.dev'])
         ->set('deploy_path', getcwd());
 
 
@@ -267,8 +267,8 @@ The if you will do:
 the following commands will be done automatically after database import:
 ::
 
-    wp search-replace http://www.example.com http://example-com.dev
-    wp search-replace http://sub.example.com http://sub-example-com.dev
+    wp search-replace https://www.example.com https://example-com.dev
+    wp search-replace https://sub.example.com https://sub-example-com.dev
 
 
 Configuration
@@ -347,7 +347,26 @@ Therefore our config to synchronize files media & WordPress / plugins code looks
         ]);
 
 
+Should I use "deployer-extended-wordpress" or "deployer-extended-wordpress-composer"?
+-------------------------------------------------------------------------------------
+
+In `sourcebroker/deployer-extended-wordpress`_ the WordPress and third party plugins are installed manually. What you have in git is
+basically only your theme. The good thing is that in such case you can update WordPress and plugins automatically.
+This can be considered as preferable for low budget WordPress websites.
+
+In `sourcebroker/deployer-extended-wordpress-composer`_ the WordPress and third party plugins are installed using composer.
+This way you gain more control over what is installed but at the same time to install new WordPress or new plugin
+version you need first to modify composer.json or do composer update (depending how big upgrade you do). Then you need
+to commit composer.json / composer.lock and do deploy which will install new version of WordPress and plugins.
+This is additional work that can not be easily automated. One of additional advantages of this solution is that you can
+easily cleanup infected WordPress/plugins files as with each deployment all php files are fresh (part from your git
+and part from composer repositories).
+
+
 .. _sourcebroker/deployer-extended: https://github.com/sourcebroker/deployer-extended
 .. _sourcebroker/deployer-extended-media: https://github.com/sourcebroker/deployer-extended-media
 .. _sourcebroker/deployer-extended-database: https://github.com/sourcebroker/deployer-extended-database
+.. _sourcebroker/deployer-extended-wordpress: https://github.com/sourcebroker/deployer-extended-wordpress
+.. _sourcebroker/deployer-extended-wordpress-composer: https://github.com/sourcebroker/deployer-extended-wordpress-composer
 .. _wp-cli/search-replace-command: https://github.com/wp-cli/search-replace-command
+.. _wp-cli/wp-cli: https://github.com/wp-cli/wp-cli
