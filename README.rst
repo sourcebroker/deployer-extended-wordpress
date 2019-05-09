@@ -6,7 +6,7 @@ deployer-extended-wordpress
 What does it do?
 ----------------
 
-* NOTE!! This package is working only with Deployer 4 *
+**NOTE! Its tested only with Deployer 4.3!**
 
 This package provides deploy task for deploying WordPress with deployer (deployer.org) and additionally a tasks
 to synchronize database and media files.
