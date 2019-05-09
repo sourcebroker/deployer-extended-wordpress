@@ -14,6 +14,23 @@ manually by admin panel (or automatically with tools like InfiniteWP). This is a
 no deployment at all and deployment fully driven by composer. If you want to manage WordPress and plugins
 fully with composer then check https://roots.io/
 
+
+Should I use "deployer-extended-wordpress" or "deployer-extended-wordpress-composer"?
+-------------------------------------------------------------------------------------
+
+In `sourcebroker/deployer-extended-wordpress`_ the WordPress and third party plugins are installed manually. What you have in git is
+basically only your theme. The good thing is that in such case you can update WordPress and plugins automatically.
+This can be considered as preferable for low budget WordPress websites.
+
+In `sourcebroker/deployer-extended-wordpress-composer`_ the WordPress and third party plugins are installed using composer.
+This way you gain more control over what is installed but at the same time to install new WordPress or new plugin
+version you need first to modify composer.json or do composer update (depending how big upgrade you do). Then you need
+to commit composer.json / composer.lock and do deploy which will install new version of WordPress and plugins.
+This is additional work that can not be easily automated. One of additional advantages of this solution is that you can
+easily cleanup infected WordPress/plugins files as with each deployment all php files are fresh (part from your git
+and part from composer repositories).
+
+
 Dependencies
 ------------
 
@@ -346,21 +363,6 @@ Therefore our config to synchronize files media & WordPress / plugins code looks
             ]
         ]);
 
-
-Should I use "deployer-extended-wordpress" or "deployer-extended-wordpress-composer"?
--------------------------------------------------------------------------------------
-
-In `sourcebroker/deployer-extended-wordpress`_ the WordPress and third party plugins are installed manually. What you have in git is
-basically only your theme. The good thing is that in such case you can update WordPress and plugins automatically.
-This can be considered as preferable for low budget WordPress websites.
-
-In `sourcebroker/deployer-extended-wordpress-composer`_ the WordPress and third party plugins are installed using composer.
-This way you gain more control over what is installed but at the same time to install new WordPress or new plugin
-version you need first to modify composer.json or do composer update (depending how big upgrade you do). Then you need
-to commit composer.json / composer.lock and do deploy which will install new version of WordPress and plugins.
-This is additional work that can not be easily automated. One of additional advantages of this solution is that you can
-easily cleanup infected WordPress/plugins files as with each deployment all php files are fresh (part from your git
-and part from composer repositories).
 
 
 .. _sourcebroker/deployer-extended: https://github.com/sourcebroker/deployer-extended
