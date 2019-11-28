@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+0.6.1
+~~~~~
+
+a) [BUGFIX] linux command "paste" is not available on all shells.
+
+
 0.6.0
 ~~~~~
 

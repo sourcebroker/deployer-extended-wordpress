@@ -6,7 +6,7 @@ namespace Deployer;
  * Deploys WordPress core to the new release.
  * WordPress core version number is taken from the previous release.
  */
-task('deploy:wp:core', function() {
+task('deploy:wp:core', function () {
     $wpRepoDir = get('wp_core_dir', '{{deploy_path}}/shared/wordpress.git');
     $wpRepoUrl = get('wp_core_repository', 'https://github.com/WordPress/WordPress.git');
 
@@ -23,7 +23,8 @@ task('deploy:wp:core', function() {
         $currentWordpressVersion = ask('<info>Please enter a git tag for appropriate WordPress version, e.g. "4.5.3":</info>');
     } else {
         // Previous release exists - get version from previous version.php file.
-        $currentWordpressVersion  = run('cat {{deploy_path}}/current/wp-includes/version.php | grep -Ei "wp_version\s+=\s+[\'\"]([0-9\.]+)[\'\"]" | grep -Eo "[0-9\.]" | paste -sd ""')->toString();
+        $currentWordpressVersion = implode('', explode("\n",
+            run('cat {{deploy_path}}/current/wp-includes/version.php | grep -Ei "wp_version\s+=\s+[\'\"]([0-9\.]+)[\'\"]" | grep -Eo "[0-9\.]"')->toString()));
     }
 
     if (!$currentWordpressVersion) {
