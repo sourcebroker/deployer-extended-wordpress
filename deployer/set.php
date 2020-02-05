@@ -2,6 +2,8 @@
 
 namespace Deployer;
 
+set('default_timeout', 900);
+
 set('local/bin/wp', function () {
     return './vendor/bin/wp';
 });

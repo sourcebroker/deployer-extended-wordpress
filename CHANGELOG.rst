@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+master
+~~~~~~
+
+a) [TASK] Deployer 6 compatibility
+
 0.6.1
 ~~~~~
 
