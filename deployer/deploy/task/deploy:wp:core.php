@@ -24,7 +24,7 @@ task('deploy:wp:core', function () {
     } else {
         // Previous release exists - get version from previous version.php file.
         $currentWordpressVersion = implode('', explode("\n",
-            run('cat {{deploy_path}}/current/wp-includes/version.php | grep -Ei "wp_version\s+=\s+[\'\"]([0-9\.]+)[\'\"]" | grep -Eo "[0-9\.]"')->toString()));
+            run('cat {{deploy_path}}/current/wp-includes/version.php | grep -Ei "wp_version\s+=\s+[\'\"]([0-9\.]+)[\'\"]" | grep -Eo "[0-9\.]"')));
     }
 
     if (!$currentWordpressVersion) {
