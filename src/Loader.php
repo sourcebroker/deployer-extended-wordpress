@@ -15,7 +15,7 @@ class Loader
                 ['path' => 'vendor/sourcebroker/deployer-extended/deployer'],
                 ['path' => 'vendor/sourcebroker/deployer-extended-database/deployer'],
                 ['path' => 'vendor/sourcebroker/deployer-extended-media/deployer'],
-                ['path' => 'vendor/sourcebroker/deployer-extended-typo3/deployer/default'],
+                ['path' => 'vendor/sourcebroker/deployer-extended-wordpress/deployer']
             ]
         );
     }
