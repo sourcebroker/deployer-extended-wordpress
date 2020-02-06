@@ -6,8 +6,6 @@ deployer-extended-wordpress
 What does it do?
 ----------------
 
-**NOTE! Its tested only with Deployer 4.3!**
-
 This package provides deploy task for deploying WordPress with deployer (deployer.org) and additionally a tasks
 to synchronize database and media files.
 
@@ -81,27 +79,29 @@ Installation
     namespace Deployer;
 
     require __DIR__.'/vendor/autoload.php';
-
+`
     new \SourceBroker\DeployerExtendedWordpress\Loader();
 
     set('repository', 'git@my-git:my-project.git');
 
-    server('live', '111.111.111.111')
-        ->user('www-data')
+    host('live')
+        ->hostname('example.com')->port(22)
+        ->user('deploy')
         ->set('public_urls', ['https://www.example.com/'])
-        ->set('deploy_path', '/var/www/example.com.live');
+        ->set('deploy_path', '/var/www/example.com/live');
 
-    server('beta', '111.111.111.111')
-        ->user('www-data')
+    host('beta', '111.111.111.111')
+        ->hostname('example.com')->port(22)
+        ->user('deploy')
         ->set('public_urls', ['https://beta.example.com/'])
-        ->set('deploy_path', '/var/www/example.com.beta');
+        ->set('deploy_path', '/var/www/example.com/beta');
 
-    server('local', 'localhost')
+    host('local')
         ->set('public_urls', ['https://example-com.dev/'])
         ->set('deploy_path', getcwd());
 
 
-Mind the declaration of server('local', 'localhost'); Its needed for database tasks to decalre domain replacements,
+Mind the declaration of host('local'); Its needed for database tasks to declare domain replacements,
 and path to store database dumps.
 
 Project's folders structure
@@ -118,7 +118,6 @@ This deployment has following assumptions:
         deploy.php
         composer.lock
         composer.json
-        .htaccess
         .gitignore
         wp-config.php
         wp-config-local.php.dist
@@ -149,74 +148,93 @@ This file should be included in ``wp-config.php`` before ``require_once(ABSPATH 
 Deployment
 ----------
 
-The deploy task consist of following tasks:
+The deploy task (defined in ``deployer/deploy/task/deploy.php``)  consist of following tasks:
 ::
 
     task('deploy', [
-        // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-lock
-        'deploy:check_lock',
+      // Standard deployer deploy:info
+      'deploy:info',
 
-        // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-composer-install
-        'deploy:check_composer_install',
+      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-lock
+      'deploy:check_lock',
 
-        // Standard deployer deploy:prepare
-        'deploy:prepare',
+      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-composer-install
+      'deploy:check_composer_install',
 
-        // Standard deployer deploy:lock
-        'deploy:lock',
+      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-branch-local
+      'deploy:check_branch_local',
 
-        // Standard deployer deploy:release
-        'deploy:release',
+      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-branch
+      'deploy:check_branch',
 
-        // Standard deployer deploy:update_code
-        'deploy:update_code',
+      // Standard deployer deploy:prepare
+      'deploy:prepare',
 
-        // Standard deployer deploy:shared
-        'deploy:shared',
+      // Standard deployer deploy:lock
+      'deploy:lock',
 
-        // Standard deployer deploy:writable
-        'deploy:writable',
+      // Standard deployer deploy:release
+      'deploy:release',
 
-        // Standard deployer deploy:vendors
-        'deploy:vendors',
+      // Standard deployer deploy:update_code
+      'deploy:update_code',
 
-        // Detect WP version and get fresh code from WordPress git repo
-        'deploy:wp:core',
+      // Standard deployer deploy:shared
+      'deploy:shared',
 
-        // Standard deployer deploy:copy_dirs. Copy plugins from previous release of WordPress
-        'deploy:copy_dirs',
+      // Standard deployer deploy:writable
+      'deploy:writable',
 
-        // Standard deployer deploy:clear_paths
-        'deploy:clear_paths',
+      // Standard deployer deploy:vendors
+      'deploy:vendors',
 
-        // Create database backup, compress and copy to database store.
-        // Read more on https://github.com/sourcebroker/deployer-extended-database#db-backup
-        'db:backup',
+      // Detect WP version and get fresh code from WordPress git repo
+      'deploy:wp:core',
 
-        // Clear php cli cache.
-        // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-cli
-        'php:clear_cache_cli',
+      // Standard deployer deploy:copy_dirs. Copy plugins from previous release of WordPress
+      'deploy:copy_dirs',
 
-        // Start buffering http requests. No frontend access possible from now.
-        // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
-        'buffer:start',
+      // Standard deployer deploy:clear_paths
+      'deploy:clear_paths',
 
-        // Standard deployer symlink (symlink release/x/ to current/)
-        'deploy:symlink',
+      // Create database backup, compress and copy to database store.
+      // Read more on https://github.com/sourcebroker/deployer-extended-database#db-backup
+      'db:backup',
 
-        // Clear frontend http cache.
-        // Read more on https://github.com/sourcebroker/deployer-extended#php-clear-cache-http
-        'php:clear_cache_http',
+      // Start buffering http requests. No frontend access possbile from now.
+      // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
+      'buffer:start',
 
-        // Frontend access possible again from now
-        // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
-        'buffer:stop',
+      // Truncate caching tables, all cf_* tables
+      // Read more on https://github.com/sourcebroker/deployer-extended-database#db-truncate
+      'db:truncate',
 
-        // Standard deployer deploy:unlock
-        'deploy:unlock',
+      // Standard deployers symlink (symlink release/x/ to current/)
+      'deploy:symlink',
 
-        // Standard deployer cleanup.
-        'cleanup',
+      // Clear php cli cache.
+      // Read more on https://github.com/sourcebroker/deployer-extended#cache-clear-php-cli
+      'cache:clear_php_cli',
+
+      // Clear frontend http cache.
+      // Read more on https://github.com/sourcebroker/deployer-extended#cache-clear-php-http
+      'cache:clear_php_http',
+
+      // Frontend access possbile again from now
+      // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
+      'buffer:stop',
+
+      // Standard deployer deploy:unlock
+      'deploy:unlock',
+
+      // Standard deployer cleanup.
+      'cleanup',
+
+      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-extend-log
+      'deploy:extend_log',
+
+      // Standard deployer success.
+      'success',
     ])->desc('Deploy your WordPress');
 
 Its very advisable that you test deploy on some beta instance first :)
@@ -224,7 +242,7 @@ Its very advisable that you test deploy on some beta instance first :)
 
    dep deploy beta
 
-The shared dirs are:
+The shared dirs defined in ``deployer/set.php`` are:
 ::
 
     set('shared_dirs', [
@@ -234,10 +252,11 @@ The shared dirs are:
         ]
     );
 
-The shared files are:
+The shared files defined in ``deployer/set.php``are:
 ::
 
     set('shared_files', [
+        '.htaccess',
         'wp-config-local.php',
     ]);
 
@@ -263,17 +282,19 @@ every pair of corresponding urls.
 Look at following example to give you idea:
 ::
 
-    server('live', '111.111.111.111')
-        ->user('www-data')
+    host('live', '111.111.111.111')
+        ->hostname('example.com')->port(22)
+        ->user('deploy')
         ->set('public_urls', ['https://www.example.com', 'https://sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.live');
 
-    server('beta', '111.111.111.111')
-        ->user('www-data')
+    host('beta', '111.111.111.111')
+        ->hostname('example.com')->port(22)
+        ->user('deploy')
         ->set('public_urls', ['https://beta.example.com', 'https://beta-sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.beta');
 
-    server('local', 'localhost')
+    host('local')
         ->set('public_urls', ['https://example-com.dev', 'https://sub-example-com.dev'])
         ->set('deploy_path', getcwd());
 
@@ -346,6 +367,7 @@ Therefore our config to synchronize files media & WordPress / plugins code looks
                 '+ /wp-admin/**',
                 '+ /wp-includes/',
                 '+ /wp-includes/**',
+                '+ .htaccess',
                 '+ wp-activate.php',
                 '+ wp-blog-header.php',
                 '+ wp-comments-post.php',
