@@ -74,31 +74,31 @@ Installation
 5) Example deploy.php file:
    ::
 
-    <?php
+      <?php
 
-    namespace Deployer;
+      namespace Deployer;
 
-    require __DIR__.'/vendor/autoload.php';
-`
-    new \SourceBroker\DeployerExtendedWordpress\Loader();
+      require __DIR__.'/vendor/autoload.php';
 
-    set('repository', 'git@my-git:my-project.git');
+      new \SourceBroker\DeployerExtendedWordpress\Loader();
 
-    host('live')
-        ->hostname('example.com')->port(22)
-        ->user('deploy')
-        ->set('public_urls', ['https://www.example.com/'])
-        ->set('deploy_path', '/var/www/example.com/live');
+      set('repository', 'git@my-git:my-project.git');
 
-    host('beta', '111.111.111.111')
-        ->hostname('example.com')->port(22)
-        ->user('deploy')
-        ->set('public_urls', ['https://beta.example.com/'])
-        ->set('deploy_path', '/var/www/example.com/beta');
+      host('live')
+          ->hostname('example.com')->port(22)
+          ->user('deploy')
+          ->set('public_urls', ['https://www.example.com/'])
+          ->set('deploy_path', '/var/www/example.com/live');
 
-    host('local')
-        ->set('public_urls', ['https://example-com.dev/'])
-        ->set('deploy_path', getcwd());
+      host('beta', '111.111.111.111')
+          ->hostname('example.com')->port(22)
+          ->user('deploy')
+          ->set('public_urls', ['https://beta.example.com/'])
+          ->set('deploy_path', '/var/www/example.com/beta');
+
+      host('local')
+          ->set('public_urls', ['https://example-com.dev/'])
+          ->set('deploy_path', getcwd());
 
 
 Mind the declaration of host('local'); Its needed for database tasks to declare domain replacements,
