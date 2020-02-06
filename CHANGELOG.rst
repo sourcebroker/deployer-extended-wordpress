@@ -6,6 +6,8 @@ master
 ~~~~~~
 
 a) [TASK] Deployer 6 compatibility
+b) [TASK][BREAKING] Add .htaccess to shared files and add it to files downloaded with 'media:pull'
+c) [TASK] Add wp-admin/index.php entrypoint.
 
 0.6.1
 ~~~~~

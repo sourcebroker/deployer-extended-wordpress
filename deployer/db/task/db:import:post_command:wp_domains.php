@@ -23,10 +23,8 @@ task('db:import:post_command:wp_domains', function () {
         throw new \Exception('Can not determine source instance based on dump filename. [Error code: 1498321481427]');
     }
     $currentInstancePublicUrls = get('public_urls');
-
-    $sourceInstance = Configuration::getHost($sourceInstanceName);
-    $sourceInstancePublicUrls = $sourceInstance->get('public_urls');
-    if (count(get('public_urls')) === count($sourceInstance->get('public_urls'))) {
+    $sourceInstancePublicUrls = Configuration::getHost($sourceInstanceName)->get('public_urls');
+    if (count($currentInstancePublicUrls) === count($sourceInstancePublicUrls)) {
         $publicUrlsPairs = array_combine($sourceInstancePublicUrls, $currentInstancePublicUrls);
         foreach ($publicUrlsPairs as $publicUrlOld => $publicUrlNew) {
             runLocally('{{local/bin/wp}} search-replace ' .

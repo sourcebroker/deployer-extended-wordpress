@@ -2,8 +2,6 @@
 
 namespace Deployer;
 
-use SourceBroker\DeployerInstance\Instance;
-
 set('default_timeout', 900);
 
 set('local/bin/wp', function () {
@@ -19,6 +17,7 @@ set('shared_dirs', [
 
 set('shared_files', [
     'wp-config-local.php',
+    '.htaccess',
 ]);
 
 set('copy_dirs', [
@@ -34,13 +33,16 @@ set('writable_dirs', [
 );
 
 set('clear_paths', [
+    '.envrc',
     '.git',
     '.gitattributes',
     '.gitignore',
+    '.php_cs',
     'composer.json',
     'composer.lock',
     'composer.phar',
     'license.txt',
+    'phpstan.neon',
     'readme.html',
     'wp-config-local.php.dist'
 ]);
@@ -50,6 +52,9 @@ set('buffer_config', [
         'index.php' => [
             'entrypoint_filename' => 'index.php',
         ],
+        'wp-admin/index.php' => [
+            'entrypoint_filename' => 'wp-admin/index.php',
+        ]
     ]
 );
 
@@ -65,6 +70,7 @@ set('media',
             '+ /wp-admin/**',
             '+ /wp-includes/',
             '+ /wp-includes/**',
+            '+ .htaccess',
             '+ wp-activate.php',
             '+ wp-blog-header.php',
             '+ wp-comments-post.php',
