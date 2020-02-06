@@ -2,7 +2,6 @@
 
 namespace SourceBroker\DeployerExtendedWordpress;
 
-use SourceBroker\DeployerExtendedWordpress\Drivers\ConfigFile;
 use SourceBroker\DeployerLoader\Load;
 
 class Loader

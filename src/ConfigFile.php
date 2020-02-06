@@ -1,6 +1,6 @@
 <?php
 
-namespace SourceBroker\DeployerExtendedWordpress\Drivers;
+namespace SourceBroker\DeployerExtendedWordpress;
 
 /**
  * Class ConfigFile
