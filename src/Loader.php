@@ -2,12 +2,14 @@
 
 namespace SourceBroker\DeployerExtendedWordpress;
 
+use SourceBroker\DeployerExtendedWordpress\Drivers\ConfigFile;
 use SourceBroker\DeployerLoader\Load;
 
 class Loader
 {
     public function __construct()
     {
+        (new ConfigFile())->createConfigFileIfDoesNotExists(getcwd() . '/wp-config-local.php');
         /** @noinspection PhpIncludeInspection */
         require_once 'recipe/common.php';
         new Load([

@@ -3,84 +3,16 @@
 namespace SourceBroker\DeployerExtendedWordpress\Drivers;
 
 /**
- * Class WordpressDriver
+ * Class ConfigFile
  * @package SourceBroker\DeployerExtended\Drivers
  */
-class WordpressDriver
+class ConfigFile
 {
-    /**
-     * @param null $absolutePathWithConfig
-     * @return array
-     * @throws \Exception
-     * @internal param null $params
-     */
-    public function getDatabaseConfig($absolutePathWithConfig = null)
-    {
-        $this->createEnvFileIfDoesNotExist($absolutePathWithConfig);
-        $dbConfig = [];
-        if (file_exists($absolutePathWithConfig)) {
-            /** @noinspection PhpIncludeInspection */
-            require_once $absolutePathWithConfig;
-
-            if (defined('DB_NAME')) {
-                $dbConfig['dbname'] = DB_NAME;
-            }
-
-            if (defined('DB_USER')) {
-                $dbConfig['user'] = DB_USER;
-            }
-
-            if (defined('DB_PASSWORD')) {
-                $dbConfig['password'] = DB_PASSWORD;
-            }
-
-            if (defined('DB_HOST')) {
-                $hostParts = explode(':', DB_HOST);
-                $dbConfig['host'] = count($hostParts) > 1 ? $hostParts[0] : DB_HOST;
-                $dbConfig['port'] = count($hostParts) > 1 ? $hostParts[1] : 3306;
-            }
-            if (defined('DB_PORT')) {
-                $dbConfig['port'] = DB_PORT;
-            }
-
-        } else {
-            throw new \Exception('Missing file "' . $absolutePathWithConfig . '" when trying to get Wordpress configuration file.');
-        }
-        return $dbConfig;
-    }
-
-    /**
-     * Return the instance name for project
-     *
-     * @param null $absolutePathWithConfig
-     * @return string
-     * @throws \Exception
-     * @internal param null $params
-     */
-    public function getInstanceName($absolutePathWithConfig = null)
-    {
-        $this->createEnvFileIfDoesNotExist($absolutePathWithConfig);
-        if (file_exists($absolutePathWithConfig)) {
-            /** @noinspection PhpIncludeInspection */
-            require_once $absolutePathWithConfig;
-
-            $instanceName = getenv('INSTANCE');
-            if (isset($instanceName) && strlen($instanceName)) {
-                $instanceName = strtolower($instanceName);
-            } else {
-                throw new \Exception("\nINSTANCE env variable is not set. \nIf this is your local instance then please put following line: \nputenv('INSTANCE=local');  \nin configuration file: ' . $absolutePathWithConfig . '\n\n");
-            }
-            return $instanceName;
-        } else {
-            throw new \Exception('Missing file "' . $absolutePathWithConfig . '" when trying to get Wordpress configuration file.');
-        }
-    }
-
     /**
      * @param $absolutePathWithConfig
      * @throws \Exception
      */
-    public function createEnvFileIfDoesNotExist($absolutePathWithConfig)
+    public function createConfigFileIfDoesNotExists($absolutePathWithConfig)
     {
         if (!file_exists($absolutePathWithConfig)) {
             $host = getenv('MYSQL_HOST');
@@ -97,11 +29,11 @@ class WordpressDriver
                 $databaseBaseName = 'wp_' . $match[1];
                 $databaseBaseName = str_replace(['.', '-'], ['_', '_'], $databaseBaseName);
                 if (!empty(getenv('MYSQL_USER')) && !empty(getenv('MYSQL_PASSWORD'))) {
-                    $databaseName = $this->tryToCreateDatabaseIfNotExists($host, $port, getenv('MYSQL_USER'),
+                    $databaseName = $this->createDatabaseIfDoesNotExists($host, $port, getenv('MYSQL_USER'),
                         getenv('MYSQL_PASSWORD'), $databaseBaseName);
                 }
                 if (empty($databaseName) && !empty(getenv('MYSQL_ROOT_USER')) && !empty(getenv('MYSQL_ROOT_PASSWORD'))) {
-                    $databaseName = $this->tryToCreateDatabaseIfNotExists($host, $port, getenv('MYSQL_ROOT_USER'),
+                    $databaseName = $this->createDatabaseIfDoesNotExists($host, $port, getenv('MYSQL_ROOT_USER'),
                         getenv('MYSQL_ROOT_PASSWORD'), $databaseBaseName);
                     $username = getenv('MYSQL_ROOT_USER');
                     $password = getenv('MYSQL_ROOT_PASSWORD');
@@ -127,7 +59,7 @@ class WordpressDriver
         }
     }
 
-    private function tryToCreateDatabaseIfNotExists($host, $port, $user, $password, $databaseBaseName)
+    private function createDatabaseIfDoesNotExists($host, $port, $user, $password, $databaseBaseName)
     {
         $databaseName = null;
         $mysqli = new \mysqli($host, $user, $password, '', $port);

@@ -307,7 +307,7 @@ Database synchro configuration:
             'database_default' => [
                 get('db_default'),
                 function () {
-                    return (new \SourceBroker\DeployerExtendedWordpress\Drivers\WordpressDriver)
+                    return (new \SourceBroker\DeployerExtendedWordpress\Driver)
                         ->getDatabaseConfig(getcwd() . '/wp-config-local.php');
                 }
             ]
