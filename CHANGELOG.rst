@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+master
+~~~~~
+
+a) [BUGFIX][BREAKING] Rename task names because Windows compatibility.
+
+
 1.0.0
 ~~~~~
 
