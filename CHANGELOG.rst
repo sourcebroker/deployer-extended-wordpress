@@ -6,6 +6,7 @@ master
 ~~~~~
 
 a) [BUGFIX][BREAKING] Rename task names because Windows compatibility.
+b) [TASK][BREAKING] Add compatibility with new deployer-instance.
 
 
 1.0.0

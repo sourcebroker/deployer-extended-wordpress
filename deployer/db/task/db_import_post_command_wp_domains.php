@@ -11,7 +11,7 @@ use SourceBroker\DeployerInstance\Configuration;
 task('db:import:post_command:wp_domains', function () {
 
     $dumpCode = (new ConsoleUtility())->getOption('dumpcode', true);
-    $dumpsForDumpCode = glob(get('db_storage_path_current') . '/' . '*dumpcode=' . $dumpCode . '*');
+    $dumpsForDumpCode = glob(get('db_storage_path_local') . '/' . '*dumpcode=' . $dumpCode . '*');
     if (empty($dumpsForDumpCode)) {
         throw new \Exception('Can not find dumps for dumpcode: ' . $dumpCode . '. [Error code: 1498321476975]');
     }
