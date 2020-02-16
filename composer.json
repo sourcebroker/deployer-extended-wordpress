@@ -20,9 +20,9 @@
     "wp-cli/wp-cli": "~2.1",
     "wp-cli/search-replace-command": "~2.0",
     "deployer/dist": "^6.6.0",
-    "sourcebroker/deployer-extended": "^12.0.0",
-    "sourcebroker/deployer-extended-media": "^6.0.0",
-    "sourcebroker/deployer-extended-database": "^9.0.0",
+    "sourcebroker/deployer-extended": "dev-master",
+    "sourcebroker/deployer-extended-media": "dev-master",
+    "sourcebroker/deployer-extended-database": "dev-master",
     "sourcebroker/deployer-loader": "^2.0.0"
   },
   "autoload": {
