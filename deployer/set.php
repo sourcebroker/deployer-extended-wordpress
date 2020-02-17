@@ -58,7 +58,16 @@ set('buffer_config', [
     ]
 );
 
+set('default_stage', function () {
+    return (new \SourceBroker\DeployerExtendedWordpress\Driver)
+        ->getInstanceName(getcwd() . '/wp-config-local.php');
+});
+
 // Look https://github.com/sourcebroker/deployer-extended-media for docs
+set('media_allow_copy_live', false);
+set('media_allow_link_live', false);
+set('media_allow_pull_live', false);
+set('media_allow_push_live', false);
 set('media',
     [
         'filter' => [
@@ -90,28 +99,15 @@ set('media',
         ]
     ]);
 
-
-set('default_stage', function () {
-    return (new \SourceBroker\DeployerExtendedWordpress\Driver)
-        ->getInstanceName(getcwd() . '/wp-config-local.php');
-});
-
-// Return current instance name. Based on that scripts knows from which server() takes the data to database operations.
-set('current_stage', function () {
-    return (new \SourceBroker\DeployerExtendedWordpress\Driver)
-        ->getInstanceName(getcwd() . '/wp-config-local.php');
-});
-
-set('target_stage', function () {
-    return !empty(input()->getArgument('stage')) ? input()->getArgument('stage') : get('default_stage');
-});
-
+// Look https://github.com/sourcebroker/deployer-extended-database for docs
+set('db_allow_copy_live', false);
+set('db_allow_pull_live', false);
+set('db_allow_push_live', false);
 set('db_default', [
     'ignore_tables_out' => [],
     'post_sql_in' => '',
-    'post_command' => ['{{local/bin/deployer}} db:import:post_command:wp_domains']
+    'post_command' => ['export $(cat .env | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains']
 ]);
-
 set('db_databases',
     [
         'database_default' => [
