@@ -10,6 +10,8 @@ b) [TASK][BREAKING] Add compatibility with new deployer-instance.
 c) [TASK] Do not allow to pull, push, copy, link media and database to live instance.
 d) [TASK] Add "export $(cat .env | xargs) " to db:import:post_command:wp_domains to have possibility to set php version.
 e) [TASK] Update deployer-extended-media, deployer-extended-database, deployer-instance, deployer-extended.
+f) [TASK][BREAKING] By setting ``set('branch_detect_to_deploy', false);`` change the default unsafe bahaviour of deployer to
+    deploy the currently checked out up branch. The branch must be set explicitly in host configuration.
 
 1.0.0
 ~~~~~

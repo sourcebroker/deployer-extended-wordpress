@@ -2,6 +2,8 @@
 
 namespace Deployer;
 
+set('branch_detect_to_deploy', false);
+
 set('default_timeout', 900);
 
 set('local/bin/wp', function () {
