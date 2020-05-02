@@ -15,6 +15,7 @@ f) [TASK][BREAKING] By setting ``set('branch_detect_to_deploy', false);`` change
 g) [TASK][BREAKING] Default config is taken now from config/.env - similar to bedrock.
    Look at https://github.com/sourcebroker/wordpress-starter to get idea how it works.
 h) [TASK] Export only PATH from .env because PATH is only needed for working db:import:post_command:wp_domains.
+i) [TASK] Add local task to protect vendor folder because its publicly available.
 
 1.0.0
 ~~~~~

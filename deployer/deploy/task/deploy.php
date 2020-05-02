@@ -39,6 +39,9 @@ task('deploy', [
     // Standard deployer deploy:vendors
     'deploy:vendors',
 
+    // Local task to protect vendor folder because its publicly available.
+    'deploy:protect_vendor',
+
     // Detect WP version and get fresh code from WordPress git repo
     'deploy:wp:core',
 
