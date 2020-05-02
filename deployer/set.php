@@ -113,9 +113,11 @@ set('db_allow_push_live', false);
 set('db_databases',
     [
         'database_default' => [
-            'ignore_tables_out' => [],
-            'post_sql_in' => '',
-            'post_command' => ['export $(cat .env | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains'],
+            [
+                'ignore_tables_out' => [],
+                'post_sql_in' => '',
+                'post_command' => ['export $(cat .env | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains']
+            ],
             function () {
                 return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver())
                     ->getDatabaseConfig(getcwd() . '/config');
