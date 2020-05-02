@@ -17,6 +17,7 @@
     }
   ],
   "require": {
+    "php": "^7.1",
     "wp-cli/wp-cli": "~2.1",
     "wp-cli/search-replace-command": "~2.0",
     "deployer/dist": "^6.6.0",

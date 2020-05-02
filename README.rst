@@ -12,15 +12,15 @@ to synchronize database and media files.
 The deployment is simplified in order to have ability to auto-upgrade WordPress and upgrade plugins
 manually by admin panel (or automatically with tools like InfiniteWP). This is a half way between
 no deployment at all and deployment fully driven by composer. If you want to manage WordPress and plugins
-fully with composer then check https://roots.io/
+fully with composer then check https://roots.io/ and `sourcebroker/deployer-extended-wordpress-composer`_.
 
 
 Should I use "deployer-extended-wordpress" or "deployer-extended-wordpress-composer"?
 -------------------------------------------------------------------------------------
 
-In `sourcebroker/deployer-extended-wordpress`_ the WordPress and third party plugins are installed manually. What you have in git is
-basically only your theme. The good thing is that in such case you can update WordPress and plugins automatically.
-This can be considered as preferable for low budget WordPress websites.
+In `sourcebroker/deployer-extended-wordpress`_ the WordPress and third party plugins are installed manually. What you
+have in git is basically only your theme. The good thing is that in such case you can update WordPress and plugins
+automatically. This can be considered as preferable for low budget WordPress websites.
 
 In `sourcebroker/deployer-extended-wordpress-composer`_ the WordPress and third party plugins are installed using composer.
 This way you gain more control over what is installed but at the same time to install new WordPress or new plugin
@@ -29,7 +29,6 @@ to commit composer.json / composer.lock and do deploy which will install new ver
 This is additional work that can not be easily automated. One of additional advantages of this solution is that you can
 easily cleanup infected WordPress/plugins files as with each deployment all php files are fresh (part from your git
 and part from composer repositories).
-
 
 Dependencies
 ------------
@@ -110,137 +109,61 @@ Project's folders structure
 This deployment has following assumptions:
 
 1) WordPress source code is not in GIT in order to have ability to easily upgrade them from admin panel.
-2) Plugins source code is not in GIT in order to have ability to easily upgrade them from admin panel.
-3) Taking the two above points into consideration the only files in GIT will be:
+2) ``wp-content/plugins`` should be most out of git to in order to have ability to easily upgrade them from admin panel.
+   You can have however some plugins in GIT if you like.
+3) ``wp-content/mu-plugins`` can be partially out of git but you can also have plugins there which are in git.
+4) ``config/environments`` and use of ``wp-config`` and ``.env`` idea is back ported from bedrock
+4) Taking the two above points into consideration the only files in GIT will be:
    ::
 
-        /wp-content/themes
+        /config/environments/development.php
+        /config/environments/staging.php
+        /config/application.php
+        /config/.env
+        /wp-content/plugins/my-plugin-in-git
+        /wp-content/mu-plugins/my-mu-plugin.php
+        /wp-content/themes/my-theme/
+        .gitignore
         deploy.php
         composer.lock
         composer.json
-        .gitignore
         wp-config.php
-        wp-config-local.php.dist
 
+Look at `sourcebroker/wordpress-starter`_ for example how you can use in your WordPress.
 
-wp-config-local.php
-+++++++++++++++++++
-The wp-config-local.php should be excluded from git and have following data.
+.env
+++++
+As in bedrock the config/.env files is like
 ::
 
-    <?php
+  DB_NAME='database_name'
+  DB_USER='database_user'
+  DB_PASSWORD='database_password'
 
-    putenv('INSTANCE=local');
+  # Optionally, you can use a data source name (DSN)
+  # When using a DSN, you can remove the DB_NAME, DB_USER, DB_PASSWORD, and DB_HOST variables
+  # DATABASE_URL='mysql://database_user:database_password@database_host:database_port/database_name'
 
-    define( 'DB_NAME', '' );
-    define( 'DB_USER', '' );
-    define( 'DB_PASSWORD', '' );
-    define( 'DB_HOST', '' );
-    define( 'WP_DEBUG', false );
+  # Optional variables
+  # DB_HOST='localhost'
+  # DB_PREFIX='wp_'
 
-The INSTANCE should be the same as server name defined in deploy.php.
+  WP_ENV='development'
+  WP_HOME='http://example.com'
+  WP_DEBUG_LOG=/path/to/debug.log
 
-This file should be included in ``wp-config.php`` before ``require_once(ABSPATH . 'wp-settings.php');``
-::
+  # Generate your keys here: https://roots.io/salts.html
+  AUTH_KEY='generateme'
+  SECURE_AUTH_KEY='generateme'
+  LOGGED_IN_KEY='generateme'
+  NONCE_KEY='generateme'
+  AUTH_SALT='generateme'
+  SECURE_AUTH_SALT='generateme'
+  LOGGED_IN_SALT='generateme'
+  NONCE_SALT='generateme'
 
-  require_once(ABSPATH . 'wp-config-local.php');
+The WP_ENV should be the same as server name defined in deploy.php.
 
-Deployment
-----------
-
-The deploy task (defined in ``deployer/deploy/task/deploy.php``)  consist of following tasks:
-::
-
-    task('deploy', [
-      // Standard deployer deploy:info
-      'deploy:info',
-
-      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-lock
-      'deploy:check_lock',
-
-      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-composer-install
-      'deploy:check_composer_install',
-
-      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-branch-local
-      'deploy:check_branch_local',
-
-      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-branch
-      'deploy:check_branch',
-
-      // Standard deployer deploy:prepare
-      'deploy:prepare',
-
-      // Standard deployer deploy:lock
-      'deploy:lock',
-
-      // Standard deployer deploy:release
-      'deploy:release',
-
-      // Standard deployer deploy:update_code
-      'deploy:update_code',
-
-      // Standard deployer deploy:shared
-      'deploy:shared',
-
-      // Standard deployer deploy:writable
-      'deploy:writable',
-
-      // Standard deployer deploy:vendors
-      'deploy:vendors',
-
-      // Detect WP version and get fresh code from WordPress git repo
-      'deploy:wp:core',
-
-      // Standard deployer deploy:copy_dirs. Copy plugins from previous release of WordPress
-      'deploy:copy_dirs',
-
-      // Standard deployer deploy:clear_paths
-      'deploy:clear_paths',
-
-      // Create database backup, compress and copy to database store.
-      // Read more on https://github.com/sourcebroker/deployer-extended-database#db-backup
-      'db:backup',
-
-      // Start buffering http requests. No frontend access possbile from now.
-      // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
-      'buffer:start',
-
-      // Truncate caching tables, all cf_* tables
-      // Read more on https://github.com/sourcebroker/deployer-extended-database#db-truncate
-      'db:truncate',
-
-      // Standard deployers symlink (symlink release/x/ to current/)
-      'deploy:symlink',
-
-      // Clear php cli cache.
-      // Read more on https://github.com/sourcebroker/deployer-extended#cache-clear-php-cli
-      'cache:clear_php_cli',
-
-      // Clear frontend http cache.
-      // Read more on https://github.com/sourcebroker/deployer-extended#cache-clear-php-http
-      'cache:clear_php_http',
-
-      // Frontend access possbile again from now
-      // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
-      'buffer:stop',
-
-      // Standard deployer deploy:unlock
-      'deploy:unlock',
-
-      // Standard deployer cleanup.
-      'cleanup',
-
-      // Read more on https://github.com/sourcebroker/deployer-extended#deploy-extend-log
-      'deploy:extend_log',
-
-      // Standard deployer success.
-      'success',
-    ])->desc('Deploy your WordPress');
-
-Its very advisable that you test deploy on some beta instance first :)
-::
-
-   dep deploy beta
 
 The shared dirs defined in ``deployer/set.php`` are:
 ::
@@ -257,7 +180,7 @@ The shared files defined in ``deployer/set.php``are:
 
     set('shared_files', [
         '.htaccess',
-        'wp-config-local.php',
+        'config/.env',
     ]);
 
 Synchronizing database
@@ -314,26 +237,6 @@ the following commands will be done automatically after database import:
 Configuration
 +++++++++++++
 
-Database synchro configuration:
-::
-
-    set('db_default', [
-        'ignore_tables_out' => [],
-        'post_sql_in' => '',
-        'post_command' => ['{{local/bin/deployer}} db:import:post_command:wp_domains']
-    ]);
-
-    set('db_databases',
-        [
-            'database_default' => [
-                get('db_default'),
-                function () {
-                    return (new \SourceBroker\DeployerExtendedWordpress\Driver)
-                        ->getDatabaseConfig(getcwd() . '/wp-config-local.php');
-                }
-            ]
-        ]
-    );
 
 Mind that "deploy.php" file must be the same on all instance before you can start to do database synchronization.
 
@@ -393,6 +296,7 @@ Therefore our config to synchronize files media & WordPress / plugins code looks
 .. _sourcebroker/deployer-extended-media: https://github.com/sourcebroker/deployer-extended-media
 .. _sourcebroker/deployer-extended-database: https://github.com/sourcebroker/deployer-extended-database
 .. _sourcebroker/deployer-extended-wordpress: https://github.com/sourcebroker/deployer-extended-wordpress
+.. _sourcebroker/deployer-extended-wordpress-starter: https://github.com/sourcebroker/deployer-extended-wordpress-starter
 .. _sourcebroker/deployer-extended-wordpress-composer: https://github.com/sourcebroker/deployer-extended-wordpress-composer
 .. _wp-cli/search-replace-command: https://github.com/wp-cli/search-replace-command
 .. _wp-cli/wp-cli: https://github.com/wp-cli/wp-cli

@@ -45,6 +45,12 @@ task('deploy', [
     // Standard deployer deploy:copy_dirs. Copy plugins from previous release of WordPress
     'deploy:copy_dirs',
 
+    // Read more on https://github.com/sourcebroker/deployer-extended
+    'file:copy_dirs_ignore_existing',
+
+    // Read more on https://github.com/sourcebroker/deployer-extended
+    'file:copy_files_ignore_existing',
+
     // Standard deployer deploy:clear_paths
     'deploy:clear_paths',
 

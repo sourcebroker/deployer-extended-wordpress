@@ -18,12 +18,17 @@ set('shared_dirs', [
 );
 
 set('shared_files', [
-    'wp-config-local.php',
+    'config/.env',
     '.htaccess',
 ]);
 
-set('copy_dirs', [
-    'wp-content/plugins/'
+set('copy_dirs_ignore_existing', [
+    'wp-content/plugins/',
+    'wp-content/themes/'
+]);
+
+set('copy_files_ignore_existing', [
+    'wp-content/mu-plugins/'
 ]);
 
 set('writable_dirs', [
@@ -61,8 +66,8 @@ set('buffer_config', [
 );
 
 set('default_stage', function () {
-    return (new \SourceBroker\DeployerExtendedWordpress\Driver)
-        ->getInstanceName(getcwd() . '/wp-config-local.php');
+    return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver)
+        ->getInstanceName(getcwd() . '/config');
 });
 
 // Look https://github.com/sourcebroker/deployer-extended-media for docs
@@ -105,18 +110,15 @@ set('media',
 set('db_allow_copy_live', false);
 set('db_allow_pull_live', false);
 set('db_allow_push_live', false);
-set('db_default', [
-    'ignore_tables_out' => [],
-    'post_sql_in' => '',
-    'post_command' => ['export $(cat .env | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains']
-]);
 set('db_databases',
     [
         'database_default' => [
-            get('db_default'),
+            'ignore_tables_out' => [],
+            'post_sql_in' => '',
+            'post_command' => ['export $(cat .env | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains'],
             function () {
-                return (new \SourceBroker\DeployerExtendedWordpress\Driver)
-                    ->getDatabaseConfig(getcwd() . '/wp-config-local.php');
+                return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver())
+                    ->getDatabaseConfig(getcwd() . '/config');
             }
         ]
     ]

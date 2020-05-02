@@ -3,7 +3,7 @@ Changelog
 ---------
 
 master
-~~~~~
+~~~~~~
 
 a) [BUGFIX][BREAKING] Rename task names because Windows compatibility.
 b) [TASK][BREAKING] Add compatibility with new deployer-instance.
@@ -12,6 +12,9 @@ d) [TASK] Add "export $(cat .env | xargs) " to db:import:post_command:wp_domains
 e) [TASK] Update deployer-extended-media, deployer-extended-database, deployer-instance, deployer-extended.
 f) [TASK][BREAKING] By setting ``set('branch_detect_to_deploy', false);`` change the default unsafe bahaviour of deployer to
     deploy the currently checked out up branch. The branch must be set explicitly in host configuration.
+g) [TASK][BREAKING] Default config is taken now from config/.env - similar to bedrock.
+   Look at https://github.com/sourcebroker/wordpress-starter to get idea how it works.
+
 
 1.0.0
 ~~~~~
