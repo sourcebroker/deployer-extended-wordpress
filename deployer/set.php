@@ -116,7 +116,7 @@ set('db_databases',
             [
                 'ignore_tables_out' => [],
                 'post_sql_in' => '',
-                'post_command' => ['export $(cat .env | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains']
+                'post_command' => ['export $(cat config/.env | grep PATH | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains']
             ],
             function () {
                 return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver())
