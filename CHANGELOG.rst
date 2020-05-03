@@ -16,6 +16,9 @@ g) [TASK][BREAKING] Default config is taken now from config/.env - similar to be
    Look at https://github.com/sourcebroker/wordpress-starter to get idea how it works.
 h) [TASK] Export only PATH from .env because PATH is only needed for working db:import:post_command:wp_domains.
 i) [TASK] Add local task to protect vendor folder because its publicly available.
+i) [TASK][BREAKING] User Symfony/Dotenv loadEnv to enrich possibilities to overwrite settings per instance.
+i) [FEATURE] Add possibility to use WP_INSTANCE instead of WP_ENV.
+
 
 1.0.0
 ~~~~~
