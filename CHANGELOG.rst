@@ -2,8 +2,8 @@
 Changelog
 ---------
 
-master
-~~~~~~
+2.0.0
+~~~~~
 
 a) [BUGFIX][BREAKING] Rename task names because Windows compatibility.
 b) [TASK][BREAKING] Add compatibility with new deployer-instance.
