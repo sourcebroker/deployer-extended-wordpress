@@ -19,7 +19,7 @@ Should I use "deployer-extended-wordpress" or "deployer-extended-wordpress-compo
 -------------------------------------------------------------------------------------
 
 In `sourcebroker/deployer-extended-wordpress`_ the WordPress and third party plugins are installed manually. What you
-have in git is basically only your theme. The good thing is that in such case you can update WordPress and plugins
+have in GIT is basically only your theme/plugins/muplugins. The good thing is that in such case you can update WordPress and plugins
 automatically. This can be considered as preferable for low budget WordPress websites.
 
 In `sourcebroker/deployer-extended-wordpress-composer`_ the WordPress and third party plugins are installed using composer.
@@ -27,7 +27,7 @@ This way you gain more control over what is installed but at the same time to in
 version you need first to modify composer.json or do composer update (depending how big upgrade you do). Then you need
 to commit composer.json / composer.lock and do deploy which will install new version of WordPress and plugins.
 This is additional work that can not be easily automated. One of additional advantages of this solution is that you can
-easily cleanup infected WordPress/plugins files as with each deployment all php files are fresh (part from your git
+easily cleanup infected WordPress/plugins files as with each deployment all php files are fresh (part from your GIT
 and part from composer repositories).
 
 Dependencies
@@ -86,12 +86,14 @@ Installation
       host('live')
           ->hostname('example.com')->port(22)
           ->user('deploy')
+          ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
           ->set('public_urls', ['https://www.example.com/'])
           ->set('deploy_path', '/var/www/example.com/live');
 
       host('beta', '111.111.111.111')
           ->hostname('example.com')->port(22)
           ->user('deploy')
+          ->set('shared_files', array_merge(get('shared_files'), ['config/.env.beta.local']))
           ->set('public_urls', ['https://beta.example.com/'])
           ->set('deploy_path', '/var/www/example.com/beta');
 
@@ -109,17 +111,22 @@ Project's folders structure
 This deployment has following assumptions:
 
 1) WordPress source code is not in GIT in order to have ability to easily upgrade them from admin panel.
-2) ``wp-content/plugins`` should be most out of git to in order to have ability to easily upgrade them from admin panel.
+2) ``wp-content/plugins`` should be most out of GIT to in order to have ability to easily upgrade them from admin panel.
    You can have however some plugins in GIT if you like.
-3) ``wp-content/mu-plugins`` can be partially out of git but you can also have plugins there which are in git.
-4) ``config/environments`` and use of ``wp-config`` and ``.env`` idea is back ported from bedrock
-4) Taking the two above points into consideration the only files in GIT will be:
+3) ``wp-content/mu-plugins`` can be partially out of GIT but you can also have plugins there which are in GIT.
+4) ``config/environments`` and use of ``wp-config`` and ``.env`` idea is back ported from bedrock and extended with idea of ``symfony/dotenv``
+5) Taking the two above points into consideration the only files in GIT will be:
    ::
 
         /config/environments/development.php
         /config/environments/staging.php
         /config/application.php
         /config/.env
+        /config/.env.beta
+        /config/.env.dev
+        /config/.env.live
+        /config/.env.dev.local.dist
+        /config/.htaccess
         /wp-content/plugins/my-plugin-in-git
         /wp-content/mu-plugins/my-mu-plugin.php
         /wp-content/themes/my-theme/
@@ -129,44 +136,29 @@ This deployment has following assumptions:
         composer.json
         wp-config.php
 
+Mind ``.env.beta``, ``.env.dev``, ``.env.live`` - those files stores data which is specific per instance but can be
+stored in git. For example database name, database user, database host, SMTP settings (without password). The passwords
+should be stored in file which is out of git on each of the instance host ``.env.beta.local``, ``.env.dev.local``,
+``.env.live.local`` or if you do not mind so much about security you can store them also in git.
+
+You need also to add shared local env file per instance. You can do it like this. Look at line 4:
+ ::
+
+  host('live')
+   ->hostname('example.com')->port(22)
+   ->user('deploy')
+   ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
+   ->set('public_urls', ['https://www.example.com/'])
+   ->set('deploy_path', '/var/www/example.com/live');
+
+The only required, out of git file on instnace is ``/config/.env.local`` where you set info what instance it is.
+The content of ``/config/.env.local` should be only ``WP_INSTANCE='live'`` etc depending on which intance it is.
+
 Look at `sourcebroker/wordpress-starter`_ for example how you can use in your WordPress.
-
-.env
-++++
-As in bedrock the config/.env files is like
-::
-
-  DB_NAME='database_name'
-  DB_USER='database_user'
-  DB_PASSWORD='database_password'
-
-  # Optionally, you can use a data source name (DSN)
-  # When using a DSN, you can remove the DB_NAME, DB_USER, DB_PASSWORD, and DB_HOST variables
-  # DATABASE_URL='mysql://database_user:database_password@database_host:database_port/database_name'
-
-  # Optional variables
-  # DB_HOST='localhost'
-  # DB_PREFIX='wp_'
-
-  WP_ENV='development'
-  WP_HOME='http://example.com'
-  WP_DEBUG_LOG=/path/to/debug.log
-
-  # Generate your keys here: https://roots.io/salts.html
-  AUTH_KEY='generateme'
-  SECURE_AUTH_KEY='generateme'
-  LOGGED_IN_KEY='generateme'
-  NONCE_KEY='generateme'
-  AUTH_SALT='generateme'
-  SECURE_AUTH_SALT='generateme'
-  LOGGED_IN_SALT='generateme'
-  NONCE_SALT='generateme'
-
-The WP_ENV should be the same as server name defined in deploy.php.
 
 
 The shared dirs defined in ``deployer/set.php`` are:
-::
+ ::
 
     set('shared_dirs', [
             'wp-content/uploads',
@@ -176,11 +168,11 @@ The shared dirs defined in ``deployer/set.php`` are:
     );
 
 The shared files defined in ``deployer/set.php``are:
-::
+ ::
 
     set('shared_files', [
         '.htaccess',
-        'config/.env',
+        'config/.env.local',
     ]);
 
 Synchronizing database
@@ -208,12 +200,14 @@ Look at following example to give you idea:
     host('live', '111.111.111.111')
         ->hostname('example.com')->port(22)
         ->user('deploy')
+        ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
         ->set('public_urls', ['https://www.example.com', 'https://sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.live');
 
     host('beta', '111.111.111.111')
         ->hostname('example.com')->port(22)
         ->user('deploy')
+        ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
         ->set('public_urls', ['https://beta.example.com', 'https://beta-sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.beta');
 

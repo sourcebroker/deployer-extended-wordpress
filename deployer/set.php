@@ -18,7 +18,7 @@ set('shared_dirs', [
 );
 
 set('shared_files', [
-    'config/.env',
+    'config/.env.local',
     '.htaccess',
 ]);
 
