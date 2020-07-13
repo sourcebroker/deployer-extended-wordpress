@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+2.0.1
+~~~~~
+
+a) [BUGFIX] Increase dependency to deployer-extended.
+
 2.0.0
 ~~~~~
 
