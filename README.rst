@@ -151,8 +151,8 @@ You need also to add shared local env file per instance. You can do it like this
    ->set('public_urls', ['https://www.example.com/'])
    ->set('deploy_path', '/var/www/example.com/live');
 
-The only required, out of git file on instnace is ``/config/.env.local`` where you set info what instance it is.
-The content of ``/config/.env.local` should be only ``WP_INSTANCE='live'`` etc depending on which intance it is.
+The only required, out of git file on instance is ``/config/.env.local`` where you set info what instance it is.
+The content of ``/config/.env.local`` should be only ``WP_INSTANCE='live'`` etc depending on which instance it is.
 
 Look at `sourcebroker/wordpress-starter`_ for example how you can use in your WordPress.
 
