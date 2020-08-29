@@ -115,7 +115,7 @@ This deployment has following assumptions:
    You can have however some plugins in GIT if you like.
 3) ``wp-content/mu-plugins`` can be partially out of GIT but you can also have plugins there which are in GIT.
 4) ``config/environments`` and use of ``wp-config`` and ``.env`` idea is back ported from bedrock and extended with idea of ``symfony/dotenv``
-5) Taking the two above points into consideration the only files in GIT will be:
+5) Taking the above points into consideration the only files in GIT will be:
    ::
 
         /config/environments/development.php
@@ -178,7 +178,7 @@ The shared files defined in ``deployer/set.php``are:
 Synchronizing database
 ----------------------
 
-Database synchronization is done with `sourcebroker/deployer-extended-database`.
+Database synchronization is done with `sourcebroker/deployer-extended-database`_.
 Example of command for synchronizing database from live to local instance:
 ::
 
@@ -290,7 +290,7 @@ Therefore our config to synchronize files media & WordPress / plugins code looks
 .. _sourcebroker/deployer-extended-media: https://github.com/sourcebroker/deployer-extended-media
 .. _sourcebroker/deployer-extended-database: https://github.com/sourcebroker/deployer-extended-database
 .. _sourcebroker/deployer-extended-wordpress: https://github.com/sourcebroker/deployer-extended-wordpress
-.. _sourcebroker/deployer-extended-wordpress-starter: https://github.com/sourcebroker/deployer-extended-wordpress-starter
+.. _sourcebroker/wordpress-starter: https://github.com/sourcebroker/wordpress-starter
 .. _sourcebroker/deployer-extended-wordpress-composer: https://github.com/sourcebroker/deployer-extended-wordpress-composer
 .. _wp-cli/search-replace-command: https://github.com/wp-cli/search-replace-command
 .. _wp-cli/wp-cli: https://github.com/wp-cli/wp-cli
