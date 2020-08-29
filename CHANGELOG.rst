@@ -2,6 +2,11 @@
 Changelog
 ---------
 
+2.0.2
+~~~~~
+
+a) [BUGFIX] Remove single quotes from condition as no special symbols are used.
+
 2.0.1
 ~~~~~
 

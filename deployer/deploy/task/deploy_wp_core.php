@@ -12,12 +12,12 @@ task('deploy:wp:core', function () {
 
     // Check if {{deploy_path}}/release link exists. if not - it means that task was executed after "deploy:symlink" task, so we can't proceed,
     // because we don't know the path to the previous release
-    if (!test("[ -h '{{deploy_path}}/release' ]")) {
+    if (!test("[ -h {{deploy_path}}/release ]")) {
         throw new \RuntimeException('Task "deploy:wp:core" can not be called after "deploy:symlink" [Error code: 1827354672]');
     }
 
     // Check if {{deploy_path}}/current link exists.
-    if (!test("[ -h '{{deploy_path}}/current' ]")) {
+    if (!test("[ -h {{deploy_path}}/current ]")) {
         // Previous release does not exist - get version from user.
         writeln('<info>Symlink "current" does not exists, so it looks that this is the initial deploy. That means it is not possible to find out wordpress version from previous release and you need to enter version to install manually.</info>');
         $currentWordpressVersion = ask('<info>Please enter a git tag for appropriate WordPress version, e.g. "4.5.3":</info>');
