@@ -63,7 +63,7 @@ class EnvDriver
      */
     private function getInstanceEnvName()
     {
-        return $_ENV('WP_INSTANCE') ?: $_ENV('WP_ENV');
+        return $_ENV['WP_INSTANCE'] ?: $_ENV['WP_ENV'];
     }
 }
 
