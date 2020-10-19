@@ -20,10 +20,10 @@
     "php": "^7.1",
     "wp-cli/wp-cli": "~2.1",
     "wp-cli/search-replace-command": "~2.0",
-    "deployer/dist": "^6.6.0",
-    "sourcebroker/deployer-extended": "^14.0.0",
-    "sourcebroker/deployer-extended-media": "^7.0.0",
-    "sourcebroker/deployer-extended-database": "^11.0.0",
+    "deployer/dist": "^6.8.0",
+    "sourcebroker/deployer-extended": "^15.0.0",
+    "sourcebroker/deployer-extended-media": "^8.0.0",
+    "sourcebroker/deployer-extended-database": "^13.0.0",
     "sourcebroker/deployer-loader": "^2.0.0"
   },
   "autoload": {

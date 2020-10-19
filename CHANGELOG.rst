@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+master
+~~~~~~
+
+a) [TASK][BREAKING] Update to possible braking symfony/dotenv 5.0 compatibility for "sourcebroker/deployer-extended",
+    "sourcebroker/deployer-extended-media", "sourcebroker/deployer-extended-database.
+
 2.0.2
 ~~~~~
 
