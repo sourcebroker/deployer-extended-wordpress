@@ -8,6 +8,8 @@ master
 a) [TASK][BREAKING] Update to possible braking symfony/dotenv 5.0 compatibility for "sourcebroker/deployer-extended",
     "sourcebroker/deployer-extended-media", "sourcebroker/deployer-extended-database.
 b) [TASK] Add ddev config.
+c) [TASK][BREAKING] Remove auto creation of database and .env file. Use ddev https://ddev.readthedocs.io/en/stable/ or other
+   similar projects.
 
 2.0.2
 ~~~~~

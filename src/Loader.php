@@ -8,7 +8,6 @@ class Loader
 {
     public function __construct()
     {
-        //((new \SourceBroker\DeployerExtendedWordpress\Drivers\Driver()))->createConfigFileIfDoesNotExists(getcwd() . '/config');
         /** @noinspection PhpIncludeInspection */
         require_once 'recipe/common.php';
         new Load([
