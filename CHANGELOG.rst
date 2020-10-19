@@ -10,6 +10,7 @@ a) [TASK][BREAKING] Update to possible braking symfony/dotenv 5.0 compatibility 
 b) [TASK] Add ddev config.
 c) [TASK][BREAKING] Remove auto creation of database and .env file. Use ddev https://ddev.readthedocs.io/en/stable/ or other
    similar projects.
+d) [TASK][BREAKING] Refactor EnvDrive to use Env from sourcebroker/deployer-instance. Use $_ENV instead of getenv() as symfony/dotenv 5.0 compatibility.
 
 2.0.2
 ~~~~~

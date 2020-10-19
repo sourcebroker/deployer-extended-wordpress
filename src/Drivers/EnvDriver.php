@@ -2,50 +2,68 @@
 
 namespace SourceBroker\DeployerExtendedWordpress\Drivers;
 
-use Symfony\Component\Dotenv\Dotenv;
+use Exception;
+use RuntimeException;
+use SourceBroker\DeployerInstance\Env;
 
 class EnvDriver
 {
     /**
-     * @throws \Exception
+     * @param null $absolutePathWithConfig
+     * @return array
      */
     public function getDatabaseConfig($absolutePathWithConfig = null): array
     {
         $this->loadEnv($absolutePathWithConfig);
         return [
-            'host' => getenv('DB_HOST'),
-            'port' => getenv('DB_PORT'),
-            'dbname' => getenv('DB_NAME'),
-            'user' => getenv('DB_USER'),
-            'password' => getenv('DB_PASSWORD'),
+            'host' => $this->getEnv('DB_HOST'),
+            'port' => $this->getEnv('DB_PORT'),
+            'dbname' => $this->getEnv('DB_NAME'),
+            'user' => $this->getEnv('DB_USER'),
+            'password' => $this->getEnv('DB_PASSWORD'),
         ];
     }
 
     /**
-     * @throws \Exception
+     * @param null $absolutePathWithConfig
+     * @return string
+     * @throws Exception
      */
     public function getInstanceName($absolutePathWithConfig = null): string
     {
         $this->loadEnv($absolutePathWithConfig);
-        $instanceName = strtolower(getenv('WP_INSTANCE') ? getenv('WP_INSTANCE') : getenv('WP_ENV'));
-        if (empty($instanceName)) {
-            throw new \Exception("\nWP_INSTANCE/WP_ENV env variable is not set. \nIf this is your local instance then please put following line: \nWP_ENV=development (or WP_INSTANCE=dev if you have instance based settings)\nin configuration file: ' . $absolutePathWithConfig . '\n\n");
+        $instanceName = $this->getEnv($this->getInstanceEnvName());
+        if ($instanceName === null) {
+            throw new RuntimeException("\nWP_INSTANCE/WP_ENV env variable is not set. \nIf this is your local instance then please put following line: \nWP_ENV=development (or WP_INSTANCE=dev if you have instance based settings)\nin configuration file: ' . $absolutePathWithConfig . '\n\n");
         }
         return $instanceName;
     }
 
     /**
-     * @throws \Exception
+     * @param null $absolutePathWithConfig
      */
     private function loadEnv($absolutePathWithConfig = null): void
     {
-        $absolutePathWithConfig = $absolutePathWithConfig ?? getcwd();
-        $absolutePathWithConfig = rtrim($absolutePathWithConfig, DIRECTORY_SEPARATOR);
-        $envFilePath = $absolutePathWithConfig . '/.env';
-        if (file_exists($envFilePath)) {
-            (new Dotenv(true))->loadEnv($envFilePath, 'WP_INSTANCE');
-        } else {
-            throw new \Exception('Missing file "' . $envFilePath . '".');
-        }
+        $env = new Env();
+        $env->load($absolutePathWithConfig, $this->getInstanceEnvName());
+    }
+
+    /**
+     * @param string $envName
+     * @return mixed|null
+     */
+    private function getEnv(string $envName)
+    {
+        $env = new Env();
+        return $env->get($envName);
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getInstanceEnvName()
+    {
+        return $_ENV('WP_INSTANCE') ?: $_ENV('WP_ENV');
     }
 }
+
