@@ -2,6 +2,8 @@
 
 namespace SourceBroker\DeployerExtendedWordpress\Drivers;
 
+use Exception;
+
 class Driver
 {
     public function getDatabaseConfig($absolutePathWithConfig = null): array
@@ -28,19 +30,19 @@ class Driver
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getInstanceName($absolutePathWithConfig = null): string
     {
         $instanceName = strtolower(getenv('INSTANCE'));
         if (empty($instanceName)) {
-            throw new \Exception("\nINSTANCE env variable is not set. \nIf this is your local instance then please put following line: \nputenv('INSTANCE=local');  \nin configuration file: ' . $absolutePathWithConfig . '\n\n");
+            throw new \RuntimeException("\nINSTANCE env variable is not set. \nIf this is your local instance then please put following line: \nputenv('INSTANCE=local');  \nin configuration file: ' . $absolutePathWithConfig . '\n\n");
         }
         return $instanceName;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function readConfigFile($absolutePathWithConfig = null): void
     {
@@ -48,7 +50,7 @@ class Driver
             /** @noinspection PhpIncludeInspection */
             require_once $absolutePathWithConfig;
         } else {
-            throw new \Exception('Missing file "' . $absolutePathWithConfig . '" when trying to get Wordpress configuration file.');
+            throw new \RuntimeException('Missing file "' . $absolutePathWithConfig . '" when trying to get Wordpress configuration file.');
         }
     }
 }
