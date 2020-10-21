@@ -45,7 +45,7 @@ class EnvDriver
     private function loadEnv($absolutePathWithConfig = null): void
     {
         $env = new Env();
-        $env->load($absolutePathWithConfig, $this->getInstanceEnvName());
+        $env->load($absolutePathWithConfig, 'WP_INSTANCE');
     }
 
     /**
@@ -63,7 +63,7 @@ class EnvDriver
      */
     private function getInstanceEnvName()
     {
-        return $_ENV['WP_INSTANCE'] ?: $_ENV['WP_ENV'];
+        return $_ENV['WP_INSTANCE'] ? 'WP_INSTANCE' : 'WP_ENV';
     }
 }
 
