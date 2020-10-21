@@ -40,6 +40,7 @@ set('writable_dirs', [
 );
 
 set('clear_paths', [
+    '.ddev',
     '.envrc',
     '.git',
     '.gitattributes',
