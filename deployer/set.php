@@ -68,7 +68,7 @@ set('buffer_config', [
 
 set('default_stage', function () {
     return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver)
-        ->getInstanceName(getcwd() . '/config');
+        ->getInstanceName(getcwd() . '/config/.env');
 });
 
 // Look https://github.com/sourcebroker/deployer-extended-media for docs
@@ -121,7 +121,7 @@ set('db_databases',
             ],
             function () {
                 return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver())
-                    ->getDatabaseConfig(getcwd() . '/config');
+                    ->getDatabaseConfig(getcwd() . '/config/.env');
             }
         ]
     ]

@@ -12,6 +12,7 @@ c) [TASK][BREAKING] Remove auto creation of database and .env file. Use ddev htt
    similar projects.
 d) [TASK][BREAKING] Refactor EnvDrive to use Env from sourcebroker/deployer-instance. Use $_ENV instead of getenv() as symfony/dotenv 5.0 compatibility.
 e) [TASK] Add .ddev folder to clear_paths.
+f) [TASK][BREAKING] Path for .env config in deploy.php was just folder - its now a folder with file as expected by symfony/dotenv.
 
 2.0.2
 ~~~~~
