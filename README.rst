@@ -177,7 +177,7 @@ The shared files defined in ``deployer/set.php``are:
 
 
 Composer
-++++++++
+--------
 
 You can set proper version of composer with ``composer_channel`` (values: 1, 2, stable, prelive, snapshot) or with
 ``composer_version`` which takes exact tags as arguments (https://github.com/composer/composer/tags). For stability and
