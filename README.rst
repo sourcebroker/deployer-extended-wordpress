@@ -175,6 +175,20 @@ The shared files defined in ``deployer/set.php``are:
         'config/.env.local',
     ]);
 
+
+Composer
+++++++++
+
+You can set proper version of composer with ``composer_channel`` (values: 1, 2, stable, prelive, snapshot) or with
+``composer_version`` which takes exact tags as arguments (https://github.com/composer/composer/tags). For stability and
+security  its advised that you set ``composer_channel`` with value ``1`` or ``2`` so it will be automatically updated
+but will not install any new major version in future so your deploy will remain fairly stable.
+
+::
+
+   set('composer_channel', 2);
+
+
 Synchronizing database
 ----------------------
 

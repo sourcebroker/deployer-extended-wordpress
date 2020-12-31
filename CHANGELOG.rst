@@ -2,6 +2,13 @@
 Changelog
 ---------
 
+master
+~~~~~~
+
+1) [TASK][BREAKING] Update ``sourcebroker/deployer-extended`` which overwrites deployer standard ``bin/composer``.
+   The new version of ``bin/composer`` allows to set ``composer_channel`` or ``composer_version`` and have auto
+   update functionality.
+
 3.0.0
 ~~~~~
 
