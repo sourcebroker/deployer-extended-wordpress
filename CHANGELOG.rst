@@ -2,6 +2,12 @@
 Changelog
 ---------
 
+5.0.0
+~~~~~
+
+1) [BREAKING] Upgrade for Deployer 7.
+2) [BREAKING] Remove ``deploy:extend_log`` task in favour of similar task build in in Deployer 7.
+
 4.0.0
 ~~~~~
 

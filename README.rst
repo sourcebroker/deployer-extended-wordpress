@@ -56,21 +56,16 @@ Installation
 
       composer require sourcebroker/deployer-extended-wordpress
 
-2) If you are using deployer as composer package then just put following line in your deploy.php:
-   ::
-
-      new \SourceBroker\DeployerExtendedWordpress\Loader();
-
-3) If you are using deployer as phar then put following lines in your deploy.php:
+2) Put following lines in your deploy.php:
    ::
 
       require __DIR__ . '/vendor/autoload.php';
       new \SourceBroker\DeployerExtendedWordpress\Loader();
 
-4) Remove task "deploy" from your deploy.php. Otherwise you will overwrite deploy task defined in
+3) Remove task "deploy" from your deploy.php. Otherwise you will overwrite deploy task defined in
    deployer/deploy/task/deploy.php
 
-5) Example deploy.php file:
+4) Example deploy.php file:
    ::
 
       <?php
@@ -78,31 +73,30 @@ Installation
       namespace Deployer;
 
       require __DIR__.'/vendor/autoload.php';
-
       new \SourceBroker\DeployerExtendedWordpress\Loader();
 
       set('repository', 'git@my-git:my-project.git');
 
       host('live')
-          ->hostname('example.com')->port(22)
-          ->user('deploy')
+          ->setHostname('example.com')
+          ->setRemoteUser('deploy')
           ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
           ->set('public_urls', ['https://www.example.com/'])
           ->set('deploy_path', '/var/www/example.com/live');
 
-      host('beta', '111.111.111.111')
-          ->hostname('example.com')->port(22)
-          ->user('deploy')
+      host('beta')
+          ->setHostname('example.com')
+          ->setRemoteUser('deploy')
           ->set('shared_files', array_merge(get('shared_files'), ['config/.env.beta.local']))
           ->set('public_urls', ['https://beta.example.com/'])
           ->set('deploy_path', '/var/www/example.com/beta');
 
-      host('local')
-          ->set('public_urls', ['https://example-com.dev/'])
+      host('dev')
+          ->set('public_urls', ['https://example-com.ddev.site/'])
           ->set('deploy_path', getcwd());
 
 
-Mind the declaration of host('local'); Its needed for database tasks to declare domain replacements,
+Mind the declaration of host('dev'); Its needed for database tasks to declare domain replacements,
 and path to store database dumps.
 
 Project's folders structure
@@ -137,7 +131,7 @@ This deployment has following assumptions:
         wp-config.php
 
 Mind ``.env.beta``, ``.env.dev``, ``.env.live`` - those files stores data which is specific per instance but can be
-stored in git. For example database name, database user, database host, SMTP settings (without password). The passwords
+stored in git. For example database name, database user, database host, SMTP settings (without passwords). The passwords
 should be stored in file which is out of git on each of the instance host ``.env.beta.local``, ``.env.dev.local``,
 ``.env.live.local`` or if you do not mind so much about security you can store them also in git.
 
@@ -145,8 +139,8 @@ You need also to add shared local env file per instance. You can do it like this
  ::
 
   host('live')
-   ->hostname('example.com')->port(22)
-   ->user('deploy')
+   ->setHostname('example.com')
+   ->setRemoteUser('deploy')
    ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
    ->set('public_urls', ['https://www.example.com/'])
    ->set('deploy_path', '/var/www/example.com/live');
@@ -211,22 +205,22 @@ every pair of corresponding urls.
 Look at following example to give you idea:
 ::
 
-    host('live', '111.111.111.111')
-        ->hostname('example.com')->port(22)
-        ->user('deploy')
+    host('live')
+        ->setHostname('example.com')
+        ->setRemoteUser('deploy')
         ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
         ->set('public_urls', ['https://www.example.com', 'https://sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.live');
 
-    host('beta', '111.111.111.111')
-        ->hostname('example.com')->port(22)
-        ->user('deploy')
+    host('beta')
+        ->setHostname('example.com')
+        ->setRemoteUser('deploy')
         ->set('shared_files', array_merge(get('shared_files'), ['config/.env.live.local']))
         ->set('public_urls', ['https://beta.example.com', 'https://beta-sub.example.com'])
         ->set('deploy_path', '/var/www/example.com.beta');
 
-    host('local')
-        ->set('public_urls', ['https://example-com.dev', 'https://sub-example-com.dev'])
+    host('dev')
+        ->set('public_urls', ['https://example-com.ddev.site', 'https://sub-example-com.ddev.site'])
         ->set('deploy_path', getcwd());
 
 

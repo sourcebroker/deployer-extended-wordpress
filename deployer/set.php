@@ -6,6 +6,8 @@ set('branch_detect_to_deploy', false);
 
 set('default_timeout', 900);
 
+set('composer_channel', 2);
+
 set('local/bin/wp', function () {
     return './vendor/bin/wp';
 });
@@ -66,8 +68,8 @@ set('buffer_config', [
     ]
 );
 
-set('default_stage', function () {
-    return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver)
+set('local_host', function () {
+    return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver())
         ->getInstanceName(getcwd() . '/config/.env');
 });
 
@@ -117,7 +119,7 @@ set('db_databases',
             [
                 'ignore_tables_out' => [],
                 'post_sql_in' => '',
-                'post_command' => ['export $(cat config/.env | grep PATH | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains']
+                'post_command' => ['export $(cat config/.env | grep PATH | xargs) && export $(cat config/.env.local | grep PATH | xargs) && {{local/bin/deployer}} db:import:post_command:wp_domains ' . get('local_host')]
             ],
             function () {
                 return (new \SourceBroker\DeployerExtendedWordpress\Drivers\EnvDriver())

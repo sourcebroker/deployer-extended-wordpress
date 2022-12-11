@@ -3,7 +3,8 @@
 namespace Deployer;
 
 task('deploy', [
-    // Standard deployer deploy:info
+
+    // Standard deployer task.
     'deploy:info',
 
     // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-lock
@@ -18,25 +19,28 @@ task('deploy', [
     // Read more on https://github.com/sourcebroker/deployer-extended#deploy-check-branch
     'deploy:check_branch',
 
-    // Standard deployer deploy:prepare
-    'deploy:prepare',
+    // Standard deployer task.
+    'deploy:check_remote',
 
-    // Standard deployer deploy:lock
+    // Standard deployer task.
+    'deploy:setup',
+
+    // Standard deployer task.
     'deploy:lock',
 
-    // Standard deployer deploy:release
+    // Standard deployer task.
     'deploy:release',
 
-    // Standard deployer deploy:update_code
+    // Standard deployer task.
     'deploy:update_code',
 
-    // Standard deployer deploy:shared
+    // Standard deployer task.
     'deploy:shared',
 
-    // Standard deployer deploy:writable
+    // Standard deployer task.
     'deploy:writable',
 
-    // Standard deployer deploy:vendors
+    // Standard deployer task.
     'deploy:vendors',
 
     // Local task to protect vendor folder because its publicly available.
@@ -54,22 +58,22 @@ task('deploy', [
     // Read more on https://github.com/sourcebroker/deployer-extended
     'file:copy_files_ignore_existing',
 
-    // Standard deployer deploy:clear_paths
+    // Standard deployer task.
     'deploy:clear_paths',
 
     // Create database backup, compress and copy to database store.
     // Read more on https://github.com/sourcebroker/deployer-extended-database#db-backup
     'db:backup',
 
-    // Start buffering http requests. No frontend access possbile from now.
+    // Start buffering http requests. No frontend access possible from now.
     // Read more on https://github.com/sourcebroker/deployer-extended#buffer-start
     'buffer:start',
 
-    // Truncate caching tables, all cf_* tables
+    // Truncate caching tables
     // Read more on https://github.com/sourcebroker/deployer-extended-database#db-truncate
     'db:truncate',
 
-    // Standard deployers symlink (symlink release/x/ to current/)
+    // Standard deployer task.
     'deploy:symlink',
 
     // Clear php cli cache.
@@ -80,21 +84,19 @@ task('deploy', [
     // Read more on https://github.com/sourcebroker/deployer-extended#cache-clear-php-http
     'cache:clear_php_http',
 
-    // Frontend access possbile again from now
+    // Frontend access possible again from now
     // Read more on https://github.com/sourcebroker/deployer-extended#buffer-stop
     'buffer:stop',
 
-    // Standard deployer deploy:unlock
+    // Standard deployer task.
     'deploy:unlock',
 
-    // Standard deployer cleanup.
-    'cleanup',
+    // Standard deployer task.
+    'deploy:cleanup',
 
-    // Read more on https://github.com/sourcebroker/deployer-extended#deploy-extend-log
-    'deploy:extend_log',
+    // Standard deployer task.
+    'deploy:success',
 
-    // Standard deployer success.
-    'success',
 ])->desc('Deploy your WordPress');
 
 after('deploy:failed', 'deploy:unlock');
