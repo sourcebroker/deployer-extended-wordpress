@@ -19,7 +19,7 @@
   "require": {
     "wp-cli/wp-cli": "~2.1",
     "wp-cli/search-replace-command": "~2.0",
-    "deployer/deployer": "~7.0.0",
+    "deployer/deployer": "~7.0",
     "sourcebroker/deployer-extended": "^18",
     "sourcebroker/deployer-extended-media": "^11",
     "sourcebroker/deployer-extended-database": "^16",
