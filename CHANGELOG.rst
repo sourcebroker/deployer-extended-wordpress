@@ -2,6 +2,13 @@
 Changelog
 ---------
 
+6.0.0
+~~~~~
+
+1) [BREAKING] Update dependencies to deployer-extended, deployer-extended-media, deployer-extended-database,
+   deployer-loader.
+
+
 5.0.0
 ~~~~~
 
