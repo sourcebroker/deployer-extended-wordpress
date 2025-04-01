@@ -148,8 +148,6 @@ You need also to add shared local env file per instance. You can do it like this
 The only required, out of git file on instance is ``/config/.env.local`` where you set info what instance it is.
 The content of ``/config/.env.local`` should be only ``WP_INSTANCE='live'`` etc depending on which instance it is.
 
-Look at `sourcebroker/wordpress-starter`_ for example how you can use in your WordPress.
-
 
 The shared dirs defined in ``deployer/set.php`` are:
  ::
